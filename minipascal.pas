@@ -12,5 +12,4 @@ var
   nombre: string;
   continuar: boolean;
 
-begin
-end
+
