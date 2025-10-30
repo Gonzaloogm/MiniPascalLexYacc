@@ -26,6 +26,11 @@ real        { printf("\n [LEX]REAL_TIPO"); return REAL_TIPO; }
 string      { printf("\n [LEX]STRING"); return STRING; }
 boolean     { printf("\n [LEX]BOOLEAN"); return BOOLEAN; }
 
+":="      {printf("\n [LEX]ASIGNACION"); return ASIGNACION; }
+
+writeln      {printf("\n [LEX]WRITELN"); return WRITELN; }
+
+readln    {printf("\n [LEX]READLN"); return READLN; }
 
 {iden}      { printf("\n [LEX]ID"); return ID; }
 

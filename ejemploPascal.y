@@ -27,7 +27,9 @@ extern int nLineas;
 %token  REAL_TIPO
 %token  STRING
 %token  BOOLEAN
-
+%token ASIGNACION
+%token WRITELN
+%token READLINE
 %%
 programa:
                   cabecera seccionDeclaracionCtes seccionDeclaracionVars
