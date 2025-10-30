@@ -27,9 +27,15 @@ extern int nLineas;
 %token  REAL_TIPO
 %token  STRING
 %token  BOOLEAN
+%token BEGIN
+%token END
 %token ASIGNACION
 %token WRITELN
 %token READLINE
+%token IF
+%token ELSE
+%token FOR
+%token WHILE
 %%
 programa:
                   cabecera seccionDeclaracionCtes seccionDeclaracionVars
@@ -69,6 +75,19 @@ tipo:
                   | STRING    {printf("\nTipo cadena");}
                   | BOOLEAN   {printf("\nTipo booleano");}
                   ;
+                  
+cuerpo:
+				  BEGIN instrucciones END
+				  ;
+                  
+instrucciones:
+      instruccion
+      | instruccion instrucciones
+      ;
+      
+instruccion:
+
+
 
 %%
 

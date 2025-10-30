@@ -26,11 +26,19 @@ real        { printf("\n [LEX]REAL_TIPO"); return REAL_TIPO; }
 string      { printf("\n [LEX]STRING"); return STRING; }
 boolean     { printf("\n [LEX]BOOLEAN"); return BOOLEAN; }
 
+begin     { printf("\n [LEX]BEGIN"); return BEGIN; }
+end     { printf("\n [LEX]END"); return END; }
+
 ":="      {printf("\n [LEX]ASIGNACION"); return ASIGNACION; }
 
 writeln      {printf("\n [LEX]WRITELN"); return WRITELN; }
 
 readln    {printf("\n [LEX]READLN"); return READLN; }
+
+if     { printf("\n [LEX]IF"); return IF; }
+else     { printf("\n [LEX]ELSE"); return ELSE; }
+while     { printf("\n [LEX]WHILE"); return WHILE; }
+for     { printf("\n [LEX]FOR"); return FOR; }
 
 {iden}      { printf("\n [LEX]ID"); return ID; }
 
