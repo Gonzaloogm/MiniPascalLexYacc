@@ -27,15 +27,35 @@ extern int nLineas;
 %token  REAL_TIPO
 %token  STRING
 %token  BOOLEAN
-%token BEGIN
-%token END
+%token BEGGIN
+%token ENDD
 %token ASIGNACION
 %token WRITELN
-%token READLINE
+%token READLN
 %token IF
 %token ELSE
 %token FOR
 %token WHILE
+%token THEN
+%token TO
+%token DOWNTO
+%token MAS
+%token MENOS
+%token POR
+%token POTENCIA
+%token DIV
+%token MOD
+%token AND
+%token OR
+%token NOT
+%token MENOR
+%token MAYOR
+%token MENORIGUAL
+%token MAYORIGUAL
+%token IGUAL
+%token ENTRE
+
+%token AMPERSANT
 %%
 programa:
                   cabecera seccionDeclaracionCtes seccionDeclaracionVars
@@ -77,7 +97,7 @@ tipo:
                   ;
                   
 cuerpo:
-				  BEGIN instrucciones END
+				  BEGGIN instrucciones ENDD
 				  ;
                   
 instrucciones:
