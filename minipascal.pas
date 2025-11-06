@@ -18,27 +18,24 @@ var
   continuar: boolean;
 
 begin
-    i := 33;                     { asignación simple }
-    b := 9 + i;                  { asignación con expresión }
-    resultado := b * 2;         { multiplicación }
-    resto := b mod 5;           { operación mod }
-    potencia := i ** 2;         { potencia si la soportáis }
+    i := 33;                     
+    b := 9 + i;                 
+    resultado := b * 2;         
+    resto := b mod 5;           
+    potencia := i ** 2;        
 
-    writeln(i);                 { print variable }
+    writeln(i);                 
     writeln(b);
     writeln(resultado);
     writeln(resto);
 
-    readln(i);                  { leer un entero y guardarlo en i }
+    readln(i);                  
 
-    a := i + MIN;               { uso de constante }
-    r := PI * 2;                { real con constante }
+    a := i + MIN;               
+    r := PI * 2;                
     
     writeln(a);
     writeln(r);
 
-    { lectura de string – depende de tu sintaxis si lo procesáis ya }
-    { readln(nombre); }
-    { writeln(nombre); }
 
-end;
+end.

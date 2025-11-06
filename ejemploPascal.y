@@ -65,8 +65,9 @@ programa:
 cabecera: PROGRAM ID ';'{printf("\n Reconozco la cabecera");}
             ;
 
-seccionDeclaracionCtes: /*vacia*/
-            | CONST declaracionCtes 
+seccionDeclaracionCtes:
+            /*vacia*/
+            | CONST declaracionCtes
             ;
 
 declaracionCtes: declaracionCte 
@@ -80,7 +81,8 @@ declaracionCte:
             | ID IGUAL BOOL ';'   {printf("\nDeclaracion cte bool");}
             ;
 
-seccionDeclaracionVars: /*vacia*/
+seccionDeclaracionVars:
+            /*vacia*/
             | VAR declaracionVars
             ;
 
@@ -92,39 +94,32 @@ declaracionVars:  declaracionVar
 declaracionVar:
             ID ':' tipo ';' {printf("\nDeclaracion de variable");}
             ;
-            
-
-
 tipo:
             INTEGER   {printf("\nTipo entero");}
             | REAL_TIPO      {printf("\nTipo real");}
             | STRING    {printf("\nTipo cadena");}
             | BOOLEAN   {printf("\nTipo booleano");}
             ;
-            
 cuerpo:
             BEGGIN instrucciones ENDD
             ;
             
 instrucciones:
-             /*vacia*/
-            |
-            instruccion_lista
+            /* vacío */
+            | lista_instrucciones
             ;
 
-instruccion_lista:
+lista_instrucciones:
             instruccion
-            |
-            instruccion_lista instruccion 
+            | lista_instrucciones instruccion
             ;
-            
+
 instruccion:
             asignacion
             |
             visualizacion
             |
             lectura
-           
             ;
             
 puntoycoma_opcional:
@@ -191,6 +186,8 @@ factor:
             |
             CADENA  
             |
+            BOOL
+            |
             '(' expr_aritmetica ')'
             ;
             
@@ -208,8 +205,6 @@ expr_bool_simple:
             expr_aritmetica comparador expr_aritmetica 
             |
             BOOL
-            |
-            ID
             |
             '(' expr_booleana ')'
             ;
