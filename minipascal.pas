@@ -7,9 +7,12 @@ const
  	SALUDO = "Hola";
  	OK = true;
 var
-  a, b, i, resultado, potencia, resto: integer;
+  a: integer;
+  b: integer; 
+  i: integer;
+  resultado: integer;
+  potencia: integer;
+  resto: integer;
   r: real;
   nombre: string;
   continuar: boolean;
-
-

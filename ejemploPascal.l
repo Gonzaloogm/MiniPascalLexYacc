@@ -9,7 +9,6 @@ iden    [a-zA-Z][a-zA-Z0-9]*
 cadena  \"([^\\\"]|\\.)*\"
 bool    (true|false)
 
-
 %%
 
 {real}      { printf("\n [LEX]REAL"); return REAL; }
@@ -26,55 +25,50 @@ real        { printf("\n [LEX]REAL_TIPO"); return REAL_TIPO; }
 string      { printf("\n [LEX]STRING"); return STRING; }
 boolean     { printf("\n [LEX]BOOLEAN"); return BOOLEAN; }
 
-begin     { printf("\n [LEX]BEGGIN"); return BEGGIN; }
-end     { printf("\n [LEX]ENDD"); return ENDD; }
+begin       { printf("\n [LEX]BEGGIN"); return BEGGIN; }
+end         { printf("\n [LEX]ENDD"); return ENDD; }
 
-":="      {printf("\n [LEX]ASIGNACION"); return ASIGNACION; }
+":="        {printf("\n [LEX]ASIGNACION"); return ASIGNACION; }
 
-writeln      {printf("\n [LEX]WRITELN"); return WRITELN; }
+writeln     {printf("\n [LEX]WRITELN"); return WRITELN; }
+readln      {printf("\n [LEX]READLN"); return READLN; }
 
-readln    {printf("\n [LEX]READLN"); return READLN; }
+if          { printf("\n [LEX]IF"); return IF; }
+else        { printf("\n [LEX]ELSE"); return ELSE; }
+while       { printf("\n [LEX]WHILE"); return WHILE; }
+for         { printf("\n [LEX]FOR"); return FOR; }
 
-if     { printf("\n [LEX]IF"); return IF; }
-else     { printf("\n [LEX]ELSE"); return ELSE; }
-while     { printf("\n [LEX]WHILE"); return WHILE; }
-for     { printf("\n [LEX]FOR"); return FOR; }
+then        { printf("\n [LEX]THEN"); return THEN; }
+to          { printf("\n [LEX]TO"); return TO; }
+downto      { printf("\n [LEX]DOWNTO"); return DOWNTO; }
 
-then    { printf("\n [LEX]THEN"); return THEN; }
-to      { printf("\n [LEX]TO"); return TO; }
-downto  { printf("\n [LEX]DOWNTO"); return DOWNTO; }
+div         { printf("\n [LEX]DIV"); return DIV; }
+mod         { printf("\n [LEX]MOD"); return MOD; }
+and         { printf("\n [LEX]AND"); return AND; }
+or          { printf("\n [LEX]OR"); return OR; }
+not         { printf("\n [LEX]NOT"); return NOT; }
 
-div  { printf("\n [LEX]DIV"); return DIV; }
-mod    { printf("\n [LEX]MOD"); return MOD; }
-and   { printf("\n [LEX]AND"); return AND; }
-or   { printf("\n [LEX]OR"); return OR; }
-not   { printf("\n [LEX]NOT"); return NOT; }
+"+"         { printf("\n [LEX]MAS"); return MAS; }
+"-"         { printf("\n [LEX]MENOS"); return MENOS; }
+"*"         { printf("\n [LEX]POR"); return POR; }
+"**"        { printf("\n [LEX]POTENCIA"); return POTENCIA; }
 
-"+"   { printf("\n [LEX]MAS"); return MAS; }
-"-"  { printf("\n [LEX]MENOS"); return MENOS; }
-"*"   { printf("\n [LEX]POR"); return POR; }
-"**"  { printf("\n [LEX]POTENCIA"); return POTENCIA; }
+"<"         { printf("\n [LEX]MENOR"); return MENOR; }
+">"         { printf("\n [LEX]MAYOR"); return MAYOR; }
+"<="        { printf("\n [LEX]MENORIGUAL"); return MENORIGUAL; }
+">="        { printf("\n [LEX]MAYORIGUAL"); return MAYORIGUAL; }
+"="         { printf("\n [LEX]IGUAL"); return IGUAL; }
+"<>"        { printf("\n [LEX]ENTRE"); return ENTRE; }
 
-"<"   { printf("\n [LEX]MENOR"); return MENOR; }
-">"  { printf("\n [LEX]MAYOR"); return MAYOR; }
-"<="  { printf("\n [LEX]MENORIGUAL"); return MENORIGUAL; }
-">="  { printf("\n [LEX]MAYORIGUAL"); return MAYORIGUAL; }
-"="   { printf("\n [LEX]IGUAL"); return IGUAL; }
-"<>"   { printf("\n [LEX]ENTRE"); return ENTRE; }
-
-"&"  { printf("\n [LEX]AMPERSANT"); return AMPERSANT; }
+"&"         { printf("\n [LEX]AMPERSAND"); return AMPERSAND; }
 
 {iden}      { printf("\n [LEX]ID"); return ID; }
 
-[ \t]+      ;    /* Ignorar espacios y tabulaciones */
-
+[ \t]+      ;
 \n          { nLineas++; }
 
 .           { printf("\n [LEX][%c]", yytext[0]); return yytext[0]; }
 
 %%
 
-int yywrap() {
-    return 1;
-}
-
+int yywrap() { return 1; }

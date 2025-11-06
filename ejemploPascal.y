@@ -54,8 +54,7 @@ extern int nLineas;
 %token MAYORIGUAL
 %token IGUAL
 %token ENTRE
-
-%token AMPERSANT
+%token AMPERSAND
 %%
 programa:
                   cabecera seccionDeclaracionCtes seccionDeclaracionVars
@@ -71,41 +70,27 @@ declaracionCtes: declaracionCte
                   | declaracionCte declaracionCtes
                   ; 
 declaracionCte:
-                  ID '=' NUM ';'    {printf("\nDeclaracion cte entero");}
-                  | ID '=' REAL ';'   {printf("\nDeclaracion cte real");}
-                  | ID '=' CADENA ';' {printf("\nDeclaracion cte cadena");}
-                  | ID '=' BOOL ';'   {printf("\nDeclaracion cte bool");}
+                  ID IGUAL NUM ';'    {printf("\nDeclaracion cte entero");}
+                  | ID IGUAL REAL ';'   {printf("\nDeclaracion cte real");}
+                  | ID IGUAL CADENA ';' {printf("\nDeclaracion cte cadena");}
+                  | ID IGUAL BOOL ';'   {printf("\nDeclaracion cte bool");}
                   ;
-seccionDeclaracionVars: /*vacia*/
-                  | VAR declaracionVars
+seccionDeclaracionVars: /* vacío */
+                  | VAR declaracionVar
                   ;
-declaracionVars:  declaracionVar
-                  | declaracionVar declaracionVars
-                  ;
+
 declaracionVar:
-                  listaIDs ':' tipo ';' {printf("\nDeclaracion de variable");}
+                  ID ':' tipo ';' { printf("\nDeclaracion de variable"); }
+                  | ID ':' tipo ';' declaracionVar
                   ;
-listaIDs:
-                  ID
-                  | ID ',' listaIDs
-                  ;
+
 tipo:
-                  INTEGER   {printf("\nTipo entero");}
-                  | REAL_TIPO      {printf("\nTipo real");}
-                  | STRING    {printf("\nTipo cadena");}
-                  | BOOLEAN   {printf("\nTipo booleano");}
+                  INTEGER   { printf("\nTipo entero"); }
+                  | REAL_TIPO      { printf("\nTipo real"); }
+                  | STRING    { printf("\nTipo cadena"); }
+                  | BOOLEAN   { printf("\nTipo booleano"); }
                   ;
-                  
-cuerpo:
-				  BEGGIN instrucciones ENDD
-				  ;
-                  
-instrucciones:
-      instruccion
-      | instruccion instrucciones
-      ;
-      
-instruccion:
+
 
 
 

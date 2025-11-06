@@ -50,7 +50,35 @@
      INTEGER = 266,
      REAL_TIPO = 267,
      STRING = 268,
-     BOOLEAN = 269
+     BOOLEAN = 269,
+     BEGGIN = 270,
+     ENDD = 271,
+     ASIGNACION = 272,
+     WRITELN = 273,
+     READLN = 274,
+     IF = 275,
+     ELSE = 276,
+     FOR = 277,
+     WHILE = 278,
+     THEN = 279,
+     TO = 280,
+     DOWNTO = 281,
+     MAS = 282,
+     MENOS = 283,
+     POR = 284,
+     POTENCIA = 285,
+     DIV = 286,
+     MOD = 287,
+     AND = 288,
+     OR = 289,
+     NOT = 290,
+     MENOR = 291,
+     MAYOR = 292,
+     MENORIGUAL = 293,
+     MAYORIGUAL = 294,
+     IGUAL = 295,
+     ENTRE = 296,
+     AMPERSAND = 297
    };
 #endif
 /* Tokens.  */
@@ -66,6 +94,34 @@
 #define REAL_TIPO 267
 #define STRING 268
 #define BOOLEAN 269
+#define BEGGIN 270
+#define ENDD 271
+#define ASIGNACION 272
+#define WRITELN 273
+#define READLN 274
+#define IF 275
+#define ELSE 276
+#define FOR 277
+#define WHILE 278
+#define THEN 279
+#define TO 280
+#define DOWNTO 281
+#define MAS 282
+#define MENOS 283
+#define POR 284
+#define POTENCIA 285
+#define DIV 286
+#define MOD 287
+#define AND 288
+#define OR 289
+#define NOT 290
+#define MENOR 291
+#define MAYOR 292
+#define MENORIGUAL 293
+#define MAYORIGUAL 294
+#define IGUAL 295
+#define ENTRE 296
+#define AMPERSAND 297
 
 
 
