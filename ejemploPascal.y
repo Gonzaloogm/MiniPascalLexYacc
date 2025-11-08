@@ -86,7 +86,6 @@ seccionDeclaracionVars:
             | VAR declaracionVars
             ;
 
-/* Esta es la regla BUENA (la que quiere tu profesora) */
 declaracionVars:  declaracionVar
             | declaracionVar declaracionVars
             ;
@@ -120,6 +119,12 @@ instruccion:
             visualizacion
             |
             lectura
+            |
+            if
+            |
+            while
+            |
+            for
             ;
             
 puntoycoma_opcional:
@@ -149,7 +154,6 @@ lectura:
             READLN '(' AMPERSAND ID ')' ';'
             { printf("\nInstruccion: Readln (con &)"); }
             ;
-
 
 expresion:
             expr_aritmetica  
@@ -208,6 +212,22 @@ expr_bool_simple:
             |
             '(' expr_booleana ')'
             ;
+            
+if:
+			IF '(' expr_booleana ')' THEN BEGGIN instrucciones ENDD ';'
+			|
+			IF '(' expr_booleana ')' THEN BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD ';'
+			;
+			
+while:
+			WHILE '(' expr_booleana ')' BEGGIN instrucciones ENDD ';'
+			;
+			
+for:
+			FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD ';'
+			|
+			FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD ';'
+			;
 
 comparador:
             MENOR
