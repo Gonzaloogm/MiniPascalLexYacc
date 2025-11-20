@@ -1,7 +1,12 @@
 program OperacionesYControl;
 
 var
-  a, b, i, resultado, potencia, resto: integer;
+  a: integer;
+  b: integer; 
+  i: integer;
+  resultado: integer; 
+  potencia: integer; 
+  resto: integer;
   nombre: string;
   continuar: boolean;
 

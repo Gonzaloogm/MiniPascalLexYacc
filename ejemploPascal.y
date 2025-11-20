@@ -12,7 +12,7 @@ FILE *yyin;
 extern int nLineas;
 %}
 
-/* ====== TOKENS (Corregido AMPERSANT) ====== */
+/* ====== TOKENS ====== */
 %token  ID
 %token  PROGRAM
 %token  CONST
@@ -104,7 +104,7 @@ cuerpo:
             ;
             
 instrucciones:
-            /* vacío */
+            /* vacía */
             | lista_instrucciones
             ;
 
@@ -132,14 +132,16 @@ puntoycoma_opcional:
             |
             ';'
             ;
-            
+
 visualizacion:
-            WRITELN '(' CADENA ')' puntoycoma_opcional
-            { printf("\nInstruccion: Writeln (cadena)"); }
-            |
-            WRITELN '(' ID ')' puntoycoma_opcional
-            { printf("\nInstruccion: Writeln (id)"); }
-            ;           
+            WRITELN '(' lista_parametros ')' puntoycoma_opcional
+            { printf("\nInstruccion: Writeln con parametros multiples"); }
+            ;
+
+lista_parametros:
+            expresion
+            | lista_parametros ',' expresion
+            ;
             
 asignacion:
             ID ASIGNACION expresion ';'
@@ -188,9 +190,7 @@ factor:
             |
             REAL
             |
-            CADENA  
-            |
-            BOOL
+            CADENA
             |
             '(' expr_aritmetica ')'
             ;
@@ -247,7 +247,7 @@ comparador:
 
 int main()
 {
-    yyin=fopen("minipascal.pas","r");
+    yyin=fopen("pascal2.pas","r");
     if(!yyin){
         printf("\n Error de apertura!");
         return -1;

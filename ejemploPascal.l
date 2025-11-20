@@ -6,7 +6,7 @@
 entero  [0-9]+
 real    {entero}"."{entero}
 iden    [a-zA-Z][a-zA-Z0-9]*
-cadena  \"([^\\\"]|\\.)*\"
+cadena  \'[^']*\'
 bool    (true|false)
 
 %%
@@ -41,6 +41,9 @@ for         { printf("\n [LEX]FOR"); return FOR; }
 then        { printf("\n [LEX]THEN"); return THEN; }
 to          { printf("\n [LEX]TO"); return TO; }
 downto      { printf("\n [LEX]DOWNTO"); return DOWNTO; }
+
+","         { printf("\n [LEX]COMA"); return ','; }
+";"         { printf("\n [LEX]PYC"); return ';'; }
 
 div         { printf("\n [LEX]DIV"); return DIV; }
 mod         { printf("\n [LEX]MOD"); return MOD; }
