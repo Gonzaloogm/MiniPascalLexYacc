@@ -60,25 +60,26 @@
      ELSE = 276,
      FOR = 277,
      WHILE = 278,
-     THEN = 279,
-     TO = 280,
-     DOWNTO = 281,
-     MAS = 282,
-     MENOS = 283,
-     POR = 284,
-     POTENCIA = 285,
-     DIV = 286,
-     MOD = 287,
-     AND = 288,
-     OR = 289,
-     NOT = 290,
-     MENOR = 291,
-     MAYOR = 292,
-     MENORIGUAL = 293,
-     MAYORIGUAL = 294,
-     IGUAL = 295,
-     ENTRE = 296,
-     AMPERSAND = 297
+     DO = 279,
+     THEN = 280,
+     TO = 281,
+     DOWNTO = 282,
+     MAS = 283,
+     MENOS = 284,
+     POR = 285,
+     POTENCIA = 286,
+     DIV = 287,
+     MOD = 288,
+     AND = 289,
+     OR = 290,
+     NOT = 291,
+     MENOR = 292,
+     MAYOR = 293,
+     MENORIGUAL = 294,
+     MAYORIGUAL = 295,
+     IGUAL = 296,
+     ENTRE = 297,
+     AMPERSAND = 298
    };
 #endif
 /* Tokens.  */
@@ -103,25 +104,26 @@
 #define ELSE 276
 #define FOR 277
 #define WHILE 278
-#define THEN 279
-#define TO 280
-#define DOWNTO 281
-#define MAS 282
-#define MENOS 283
-#define POR 284
-#define POTENCIA 285
-#define DIV 286
-#define MOD 287
-#define AND 288
-#define OR 289
-#define NOT 290
-#define MENOR 291
-#define MAYOR 292
-#define MENORIGUAL 293
-#define MAYORIGUAL 294
-#define IGUAL 295
-#define ENTRE 296
-#define AMPERSAND 297
+#define DO 279
+#define THEN 280
+#define TO 281
+#define DOWNTO 282
+#define MAS 283
+#define MENOS 284
+#define POR 285
+#define POTENCIA 286
+#define DIV 287
+#define MOD 288
+#define AND 289
+#define OR 290
+#define NOT 291
+#define MENOR 292
+#define MAYOR 293
+#define MENORIGUAL 294
+#define MAYORIGUAL 295
+#define IGUAL 296
+#define ENTRE 297
+#define AMPERSAND 298
 
 
 

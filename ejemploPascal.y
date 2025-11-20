@@ -34,6 +34,7 @@ extern int nLineas;
 %token ELSE
 %token FOR
 %token WHILE
+%token DO
 %token THEN
 %token TO
 %token DOWNTO
@@ -52,7 +53,11 @@ extern int nLineas;
 %token MAYORIGUAL
 %token IGUAL
 %token ENTRE
-%token AMPERSAND 
+%token AMPERSAND
+
+%nonassoc THEN
+%nonassoc ELSE
+
 
 %%
 
@@ -128,14 +133,13 @@ instruccion:
             ;
             
 puntoycoma_opcional:
-            /* vacia */
+            /* vacio (nada) */
             |
             ';'
             ;
 
 visualizacion:
-            WRITELN '(' lista_parametros ')' puntoycoma_opcional
-            { printf("\nInstruccion: Writeln con parametros multiples"); }
+            WRITELN '(' lista_parametros ')' puntoycoma_opcional { printf("\nInstruccion: Writeln con parametros multiples"); }
             ;
 
 lista_parametros:
@@ -144,24 +148,21 @@ lista_parametros:
             ;
             
 asignacion:
-            ID ASIGNACION expresion ';'
-            { printf("\nInstruccion: Asignacion"); }
+            ID ASIGNACION expresion puntoycoma_opcional { printf("\nInstruccion: Asignacion"); }
             ;
 
-
 lectura:
-            READLN '(' ID ')' ';'
-            { printf("\nInstruccion: Readln (id)"); }
+            READLN '(' ID ')' puntoycoma_opcional { printf("\nInstruccion: Readln (id)"); }
             |
-            READLN '(' AMPERSAND ID ')' ';'
-            { printf("\nInstruccion: Readln (con &)"); }
+            READLN '(' AMPERSAND ID ')' puntoycoma_opcional { printf("\nInstruccion: Readln (con &)"); }
             ;
 
 expresion:
-            expr_aritmetica  
+            expr_aritmetica
             |
-            expr_booleana    
+            expr_booleana
             ;
+
 
 expr_aritmetica:
             termino
@@ -201,33 +202,34 @@ expr_booleana:
             expr_booleana AND expr_bool_simple
             |
             expr_booleana OR expr_bool_simple
-            |
-            NOT expr_bool_simple
             ;
 
 expr_bool_simple:
-            expr_aritmetica comparador expr_aritmetica 
+            expr_aritmetica comparador expr_aritmetica
             |
             BOOL
             |
             '(' expr_booleana ')'
+            |
+            NOT expr_bool_simple
             ;
             
 if:
-			IF '(' expr_booleana ')' THEN BEGGIN instrucciones ENDD ';'
-			|
-			IF '(' expr_booleana ')' THEN BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD ';'
-			;
+            IF expr_booleana THEN instruccion %prec THEN
+            |
+            IF expr_booleana THEN instruccion ELSE instruccion
+            ;
+
 			
 while:
-			WHILE '(' expr_booleana ')' BEGGIN instrucciones ENDD ';'
-			;
-			
+            WHILE expr_booleana DO BEGGIN instrucciones ENDD ';'
+            ;
+
 for:
-			FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD ';'
-			|
-			FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD ';'
-			;
+            FOR ID ASIGNACION expr_aritmetica TO expr_aritmetica DO BEGGIN instrucciones ENDD ';'
+            |
+            FOR ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica DO BEGGIN instrucciones ENDD ';'
+            ;
 
 comparador:
             MENOR

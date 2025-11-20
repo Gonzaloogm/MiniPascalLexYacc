@@ -36,6 +36,7 @@ readln      {printf("\n [LEX]READLN"); return READLN; }
 if          { printf("\n [LEX]IF"); return IF; }
 else        { printf("\n [LEX]ELSE"); return ELSE; }
 while       { printf("\n [LEX]WHILE"); return WHILE; }
+do          { printf("\n [LEX]DO"); return DO; }
 for         { printf("\n [LEX]FOR"); return FOR; }
 
 then        { printf("\n [LEX]THEN"); return THEN; }
@@ -66,6 +67,8 @@ not         { printf("\n [LEX]NOT"); return NOT; }
 "&"         { printf("\n [LEX]AMPERSAND"); return AMPERSAND; }
 
 {iden}      { printf("\n [LEX]ID"); return ID; }
+
+"{"[^}]*"}" { printf("\n [LEX]COMENTARIO (Ignorado)"); }
 
 [ \t]+      ;
 \n          { nLineas++; }
