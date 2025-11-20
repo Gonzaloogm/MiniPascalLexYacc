@@ -51,15 +51,15 @@ begin
 
   { Bucle while }
   i := 0;
-  continuar := true;
+  continuar := 1;
 
-  while (continuar) begin
+  while (continuar > 0) begin
     writeln("Iteración número: ");
     writeln(i);
 
     i := i + 1;
     if (i >= 3) begin
-      continuar := false;
+      continuar := 0;
     end
   end;
 
