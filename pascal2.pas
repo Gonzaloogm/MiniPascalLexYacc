@@ -37,18 +37,14 @@ begin
   writeln(resto);
 
   { Uso de if/then/else con bloques obligatorios }
-  if (a > b) and not (a = 0) then
-  begin
+  if ( (a > b) and not (a = 0) ) begin
     writeln("a es mayor que b y distinto de cero.");
   end
-  else
-  begin
-    if (a = b) then
-    begin
+  else begin
+    if (a = b) begin
       writeln("a y b son iguales.");
     end
-    else
-    begin
+    else begin
       writeln("a es menor que b o a es cero.");
     end
   end;
@@ -57,14 +53,12 @@ begin
   i := 0;
   continuar := true;
 
-  while (continuar) do
-  begin
+  while (continuar) begin
     writeln("Iteración número: ");
     writeln(i);
 
     i := i + 1;
-    if (i >= 3) then
-    begin
+    if (i >= 3) begin
       continuar := false;
     end
   end;
@@ -76,9 +70,11 @@ begin
     writeln(i);
   end;
 
-  { Uso del operador + como concatenación }
+  { Concatenación con + }
   writeln("Fin del programa, ");
-  writeln(nombre + ". ¡Hasta luego!");
+  writeln(nombre);
+  writeln(". ¡Hasta luego!");
 end.
+
 
 

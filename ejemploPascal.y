@@ -119,11 +119,11 @@ lista_instrucciones:
             ;
 
 instruccion:
-            asignacion
+            asignacion ';'
             |
             visualizacion
             |
-            lectura
+            lectura ';'
             |
             if
             |
@@ -139,22 +139,23 @@ puntoycoma_opcional:
             ;
 
 visualizacion:
-            WRITELN '(' lista_parametros ')' puntoycoma_opcional { printf("\nInstruccion: Writeln con parametros multiples"); }
+            WRITELN '(' parametro_write ')' puntoycoma_opcional { printf("\nInstruccion: Writeln"); }
             ;
 
-lista_parametros:
-            expresion
-            | lista_parametros ',' expresion
+parametro_write:
+            CADENA
+            |
+            ID
             ;
             
 asignacion:
-            ID ASIGNACION expresion puntoycoma_opcional { printf("\nInstruccion: Asignacion"); }
+            ID ASIGNACION expresion { printf("\nInstruccion: Asignacion"); }
             ;
 
 lectura:
-            READLN '(' ID ')' puntoycoma_opcional { printf("\nInstruccion: Readln (id)"); }
+            READLN '(' ID ')' { printf("\nInstruccion: Readln (id)"); }
             |
-            READLN '(' AMPERSAND ID ')' puntoycoma_opcional { printf("\nInstruccion: Readln (con &)"); }
+            READLN '(' AMPERSAND ID ')' { printf("\nInstruccion: Readln (con &)"); }
             ;
 
 expresion:
@@ -215,20 +216,27 @@ expr_bool_simple:
             ;
             
 if:
-            IF expr_booleana THEN instruccion %prec THEN
+            IF '(' expr_booleana ')' BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
             |
-            IF expr_booleana THEN instruccion ELSE instruccion
+            IF '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
             ;
 
-			
 while:
-            WHILE expr_booleana DO BEGGIN instrucciones ENDD ';'
+            WHILE '(' expr_booleana ')' BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
             ;
 
 for:
-            FOR ID ASIGNACION expr_aritmetica TO expr_aritmetica DO BEGGIN instrucciones ENDD ';'
+            FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
             |
-            FOR ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica DO BEGGIN instrucciones ENDD ';'
+            FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
+            ;
+
+puntoycoma_opcional_bloque:
+            /* vacio (nada) */
+            |
+            ';'
+            |
+            ':'
             ;
 
 comparador:
