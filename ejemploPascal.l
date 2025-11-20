@@ -6,7 +6,8 @@
 entero  [0-9]+
 real    {entero}"."{entero}
 iden    [a-zA-Z][a-zA-Z0-9]*
-cadena  \'[^']*\'
+cadena  (\"[^\"]*\"|\'[^\']*\')
+
 bool    (true|false)
 
 %%
