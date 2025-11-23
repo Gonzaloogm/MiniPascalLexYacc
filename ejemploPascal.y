@@ -4,15 +4,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void yyerror(const char* msg) {
-    fprintf(stderr, "%s\n", msg);
-}
+extern int nLineas;
 int yylex(void);
 FILE *yyin;
-extern int nLineas;
+
+void yyerror(const char* msg) {
+    fprintf(stderr, "Error sintactico en linea %d: %s\n", nLineas, msg);
+}
 %}
 
-/* ====== TOKENS ====== */
 %token  ID
 %token  PROGRAM
 %token  CONST
@@ -55,67 +55,83 @@ extern int nLineas;
 %token ENTRE
 %token AMPERSAND
 
-%nonassoc THEN
-%nonassoc ELSE
-
-
 %%
-
 
 programa:
             cabecera seccionDeclaracionCtes seccionDeclaracionVars cuerpo '.'
-            { printf("\n Sintaxis correcta. Numero de lineas %d\n", nLineas); }
+            { printf("\nSintaxis correcta. Numero de lineas %d\n", nLineas); }
             ;
 
-cabecera: PROGRAM ID ';'{printf("\n Reconozco la cabecera");}
+cabecera:
+            PROGRAM ID ';'
             ;
 
 seccionDeclaracionCtes:
-            /*vacia*/
-            | CONST declaracionCtes
+            
+            |
+            CONST declaracionCtes
             ;
 
-declaracionCtes: declaracionCte 
-            | declaracionCte declaracionCtes
-            ; 
+declaracionCtes:
+            declaracionCte
+            |
+            declaracionCte declaracionCtes
+            ;
 
 declaracionCte:
-            ID IGUAL NUM ';'    {printf("\nDeclaracion cte entero");}
-            | ID IGUAL REAL ';'   {printf("\nDeclaracion cte real");}
-            | ID IGUAL CADENA ';' {printf("\nDeclaracion cte cadena");}
-            | ID IGUAL BOOL ';'   {printf("\nDeclaracion cte bool");}
+            ID IGUAL NUM ';'
+            |
+            ID IGUAL REAL ';'
+            |
+            ID IGUAL CADENA ';'
+            |
+            ID IGUAL BOOL ';'
+            |
+            error ';' { yyerrok; }
             ;
 
 seccionDeclaracionVars:
-            /*vacia*/
-            | VAR declaracionVars
+            
+            |
+            VAR declaracionVars
             ;
 
-declaracionVars:  declaracionVar
-            | declaracionVar declaracionVars
+declaracionVars:
+            declaracionVar
+            |
+            declaracionVar declaracionVars
             ;
 
 declaracionVar:
-            ID ':' tipo ';' {printf("\nDeclaracion de variable");}
+            ID ':' tipo ';' { printf("\nDeclaracion de variable"); }
+            |
+            error ';' { yyerrok; }
             ;
+
 tipo:
-            INTEGER   {printf("\nTipo entero");}
-            | REAL_TIPO      {printf("\nTipo real");}
-            | STRING    {printf("\nTipo cadena");}
-            | BOOLEAN   {printf("\nTipo booleano");}
+            INTEGER
+            |
+            REAL_TIPO
+            |
+            STRING
+            |
+            BOOLEAN
             ;
+
 cuerpo:
             BEGGIN instrucciones ENDD
             ;
             
 instrucciones:
-            /* vacía */
-            | lista_instrucciones
+            
+            |
+            lista_instrucciones
             ;
 
 lista_instrucciones:
             instruccion
-            | lista_instrucciones instruccion
+            |
+            lista_instrucciones instruccion
             ;
 
 instruccion:
@@ -130,16 +146,15 @@ instruccion:
             while
             |
             for
-            ;
-            
-puntoycoma_opcional:
-            /* vacio (nada) */
             |
             ';'
+            |
+            error ';' { yyerrok; }
             ;
 
 visualizacion:
-            WRITELN '(' parametro_write ')' puntoycoma_opcional { printf("\nInstruccion: Writeln"); }
+            WRITELN '(' parametro_write ')'
+            { printf("\nInstruccion: Writeln"); }
             ;
 
 parametro_write:
@@ -153,9 +168,9 @@ asignacion:
             ;
 
 lectura:
-            READLN '(' ID ')' { printf("\nInstruccion: Readln (id)"); }
+            READLN '(' ID ')' { printf("\nInstruccion: Readln"); }
             |
-            READLN '(' AMPERSAND ID ')' { printf("\nInstruccion: Readln (con &)"); }
+            READLN '(' AMPERSAND ID ')' { printf("\nInstruccion: Readln &"); }
             ;
 
 expresion:
@@ -164,19 +179,22 @@ expresion:
             expr_booleana
             ;
 
-
 expr_aritmetica:
             termino
             |
             expr_aritmetica MAS termino
             |
             expr_aritmetica MENOS termino
+            |
+            MENOS termino
             ;
 
 termino:
             factor
             |
             termino POR factor
+            |
+            termino '/' factor
             |
             termino DIV factor
             |
@@ -210,34 +228,29 @@ expr_bool_simple:
             |
             BOOL
             |
+            expr_aritmetica
+            |
             '(' expr_booleana ')'
             |
             NOT expr_bool_simple
             ;
             
 if:
-            IF '(' expr_booleana ')' BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
+            IF '(' expr_booleana ')' BEGGIN instrucciones ENDD
             |
-            IF '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
+            IF '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD
             ;
 
 while:
-            WHILE '(' expr_booleana ')' BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
+            WHILE '(' expr_booleana ')' BEGGIN instrucciones ENDD
             ;
 
 for:
-            FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
+            FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD
             |
-            FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD puntoycoma_opcional_bloque
+            FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD
             ;
 
-puntoycoma_opcional_bloque:
-            /* vacio (nada) */
-            |
-            ';'
-            |
-            ':'
-            ;
 
 comparador:
             MENOR
@@ -250,17 +263,18 @@ comparador:
             |
             IGUAL
             |
-            ENTRE 
+            ENTRE
             ;
 
 %%
 
 int main()
 {
-    yyin=fopen("pascal2.pas","r");
+    yyin=fopen("pruebaErrores.pas","r");
     if(!yyin){
-        printf("\n Error de apertura!");
+        printf("\nError de apertura!");
         return -1;
     }
     yyparse();
+    return 0;
 }
