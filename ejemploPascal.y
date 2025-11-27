@@ -89,7 +89,7 @@ declaracionCte:
             |
             ID IGUAL BOOL ';'
             |
-            error ';' { yyerrok; }
+            error ';' { printf("Error recuperado en la linea %d \n", nLineas); yyerrok; yyclearin;}
             ;
 
 seccionDeclaracionVars:
@@ -107,7 +107,7 @@ declaracionVars:
 declaracionVar:
             ID ':' tipo ';' { printf("\nDeclaracion de variable"); }
             |
-            error ';' { yyerrok; }
+            error ';' { printf("Error recuperado en la linea %d \n", nLineas); yyerrok; yyclearin;}
             ;
 
 tipo:
