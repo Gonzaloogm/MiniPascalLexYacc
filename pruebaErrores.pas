@@ -16,6 +16,9 @@ begin
   a := 10;
   
   c := 20 + * 5;  { ERROR 3 }
+  
+  writeln("Hola") { ERROR 4 }
+  writeln("Adios");
 
   writeln("Recuperado.");
   writeln("Si ves esto, tu compilador ha superado los 3 errores.");

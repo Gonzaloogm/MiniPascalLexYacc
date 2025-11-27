@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 extern int nLineas;
 int yylex(void);
 FILE *yyin;
@@ -11,6 +12,7 @@ FILE *yyin;
 void yyerror(const char* msg) {
     fprintf(stderr, "Error sintactico en linea %d: %s\n", nLineas, msg);
 }
+
 %}
 
 %token  ID
@@ -149,11 +151,13 @@ instruccion:
             |
             ';'
             |
-            error ';' { yyerrok; }
+            error ';' { printf("Error recuperado en la linea %d \n", nLineas); yyerrok; yyclearin;}
+            |
+            asignacion error { printf("Error, falta ; en la linea %d \n", nLineas); yyerrok; yyclearin;}
             ;
 
 visualizacion:
-            WRITELN '(' parametro_write ')'
+            WRITELN '(' parametro_write ')' ';'
             { printf("\nInstruccion: Writeln"); }
             ;
 
@@ -227,8 +231,6 @@ expr_bool_simple:
             expr_aritmetica comparador expr_aritmetica
             |
             BOOL
-            |
-            expr_aritmetica
             |
             '(' expr_booleana ')'
             |
