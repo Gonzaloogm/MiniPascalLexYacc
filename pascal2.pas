@@ -1,80 +1,77 @@
 program OperacionesYControl;
 
+const
+  PI = 3.1416;
+
 var
   a: integer;
-  b: integer; 
+  b: real;      
   i: integer;
   resultado: integer; 
-  potencia: integer; 
-  resto: integer;
   nombre: string;
-  continuar: boolean;
+  c: string;    (* Variable añadida para probar 'sin inicializar' *)
+  continuar: integer;
 
 begin
+  (* ERROR 1: Variable 'a' se usa aquí antes de hacerle un readln o asignación *)
+  i := a; 
+
   writeln("Introduce tu nombre:");
   readln(nombre);
 
   writeln("Hola, ");
   writeln(nombre);
 
+  writeln("Introduce el valor: ");
+  (* ERROR 2: Variable 'valor' no está declarada en VAR *)
+  readln(valor); 
+
   writeln("Introduce un número entero (a):");
-  readln(a);
-  writeln("Introduce otro número entero (b):");
+  readln(a); (* Aquí recién se inicializa 'a', pero ya dio error arriba *)
+  
+  writeln("Introduce otro número real (b):");
   readln(b);
 
-  { Operaciones aritméticas }
-  resultado := a + b * 2 - (a div 2);
-  potencia := a ** 2;
-  resto := a mod b;
+  (* ERROR 3: Tipos incompatibles. 'i' es integer, pero 'b' es real. *)
+  (* La multiplicación genera un real que no cabe en un integer *)
+  i := a * b; 
 
-  writeln("Resultado de la expresión: ");
+  (* ERROR 4: Intentando modificar una constante *)
+  PI := 3.1595;
+
+  (* ERROR 5: Variable 'c' declarada pero nunca se le dio valor *)
+  writeln("Valor: ", c); 
+  
+  resultado := a + 10;
+  writeln("Resultado: ");
   writeln(resultado);
 
-  writeln("El cuadrado de a es: ");
-  writeln(potencia);
-
-  writeln("El resto de a div b es: ");
-  writeln(resto);
-
-  { Uso de if/then/else con bloques obligatorios }
-  if ( (a > b) and not (a = 0) ) begin
-    writeln("a es mayor que b y distinto de cero.");
+  if ( (a > 0) and not (a = 0) ) then begin
+    writeln("a es positivo.");
   end
   else begin
-    if (a = b) begin
-      writeln("a y b son iguales.");
-    end
-    else begin
-      writeln("a es menor que b o a es cero.");
-    end
+    writeln("a es cero o negativo.");
   end;
 
-  { Bucle while }
   i := 0;
   continuar := 1;
 
-  while (continuar > 0) begin
-    writeln("Iteración número: ");
+  while (continuar > 0) do begin
+    writeln("Iteración while: ");
     writeln(i);
-
     i := i + 1;
-    if (i >= 3) begin
+    if (i >= 2) then begin
       continuar := 0;
     end
   end;
 
-  { Bucle for }
-  writeln("Contando del 1 al 5:");
-  for (i := 1 to 5) begin
-    writeln("Número: ");
+  writeln("Contando del 1 al 3:");
+  for i := 1 to 3 do begin
+    writeln("Número for: ");
     writeln(i);
   end;
 
-  { Concatenación con + }
-  writeln("Fin del programa, ");
-  writeln(nombre);
-  writeln(". ¡Hasta luego!");
+  writeln("Fin del programa.");
 end.
-
 
 

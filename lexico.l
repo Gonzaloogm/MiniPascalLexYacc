@@ -5,21 +5,20 @@
 extern int nLineas;
 %}
 
-/* Opciones para que no de error si no usamos input/yyunput */
+%option noyywrap
 %option noinput nounput
 
 entero  [0-9]+
 real    {entero}"."{entero}
 iden    [a-zA-Z][a-zA-Z0-9]*
-cadena  (\"[^\"]*\"|\'[^\']*\')
-bool    (true|false)
+cadena  \"[^\"]*\"
 
 %%
 
-{real}      { yylval.tipo = 2; return REAL; } /* 2 = T_REAL */
-{entero}    { yylval.tipo = 1; return NUM; }  /* 1 = T_INTEGER */
-{cadena}    { yylval.tipo = 3; return CADENA; } /* 3 = T_STRING */
-{bool}      { yylval.tipo = 4; return BOOL; }   /* 4 = T_BOOLEAN */
+{real}      { yylval.tipo = 2; return REAL; }
+{entero}    { yylval.tipo = 1; return NUM; }
+{cadena}    { yylval.tipo = 3; return CADENA; }
+"true"|"false" { yylval.tipo = 4; return BOOL; }
 
 const       { return CONST; }
 program     { return PROGRAM; }
@@ -80,13 +79,12 @@ not         { return NOT; }
               return ID;
             }
 
-"{"[^}]*"}" {}
+"{"[^}]*"}"                 ;
+"(*"([^*]|(\*+[^)]))*"*)"   ; 
 
 [ \t]+      ;
 \n          { nLineas++; }
 
-.           { printf("Error lexico: %s\n", yytext); }
+.           ;
 
 %%
-
-int yywrap() { return 1; }
