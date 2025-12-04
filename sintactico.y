@@ -232,8 +232,8 @@ expr_bool_simple:
     ;
 
 if:
-      IF expr_booleana THEN instrucciones ';'
-    | IF expr_booleana THEN BEGGIN instrucciones ENDD ';'
+      IF expr_booleana THEN instrucciones ';' %prec THEN
+    | IF expr_booleana THEN BEGGIN instrucciones ENDD ';' %prec THEN
     | IF expr_booleana THEN BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD ';'
     ;
 

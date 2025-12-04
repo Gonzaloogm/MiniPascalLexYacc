@@ -162,7 +162,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/* --- CORRECCION LINKER: Definimos la variable aqui (sin extern) --- */
 int nLineas = 1;
 
 void yyerror(const char* msg);
@@ -183,7 +182,6 @@ int nErrores = 0;
 char colaVars[20][100];
 int numVarsCola = 0;
 
-/* Prototipos */
 int buscarSimbolo(char* nombre);
 void addTablaSimbolos(char* nombre, int tipo, int esConstante, int inicializado);
 
@@ -209,13 +207,13 @@ void addTablaSimbolos(char* nombre, int tipo, int esConstante, int inicializado)
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 33 "sintactico.y"
+#line 31 "sintactico.y"
 {
     char nombreId[100];
     int tipo;
 }
 /* Line 193 of yacc.c.  */
-#line 219 "y.tab.c"
+#line 217 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -228,7 +226,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 232 "y.tab.c"
+#line 230 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -546,14 +544,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    54,    54,    64,    66,    66,    67,    67,    70,    71,
-      72,    73,    74,    77,    77,    78,    78,    81,    88,    92,
-      93,    97,    98,    99,   100,   103,   105,   105,   106,   106,
-     109,   110,   111,   112,   112,   112,   113,   114,   118,   122,
-     123,   137,   141,   168,   183,   183,   186,   187,   190,   193,
-     197,   198,   201,   202,   203,   207,   221,   222,   223,   225,
-     228,   228,   228,   231,   232,   233,   234,   238,   239,   240,
-     243,   246,   247,   250,   250,   250,   250,   250,   250
+       0,    52,    52,    62,    64,    64,    65,    65,    68,    69,
+      70,    71,    72,    75,    75,    76,    76,    79,    86,    90,
+      91,    95,    96,    97,    98,   101,   103,   103,   104,   104,
+     107,   108,   109,   110,   110,   110,   111,   112,   116,   120,
+     121,   135,   139,   166,   181,   181,   184,   185,   188,   191,
+     195,   196,   199,   200,   201,   205,   219,   220,   221,   222,
+     225,   225,   225,   228,   229,   230,   231,   235,   236,   237,
+     240,   243,   244,   247,   247,   247,   247,   247,   247
 };
 #endif
 
@@ -1569,7 +1567,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 55 "sintactico.y"
+#line 53 "sintactico.y"
     {
               if(nErrores == 0) {
                   printf("\nSe detectaron 0 errores.\n");
@@ -1580,32 +1578,32 @@ yyreduce:
     break;
 
   case 8:
-#line 70 "sintactico.y"
+#line 68 "sintactico.y"
     { addTablaSimbolos((yyvsp[(1) - (4)].nombreId), 1, 1, 1); }
     break;
 
   case 9:
-#line 71 "sintactico.y"
+#line 69 "sintactico.y"
     { addTablaSimbolos((yyvsp[(1) - (4)].nombreId), 2, 1, 1); }
     break;
 
   case 10:
-#line 72 "sintactico.y"
+#line 70 "sintactico.y"
     { addTablaSimbolos((yyvsp[(1) - (4)].nombreId), 3, 1, 1); }
     break;
 
   case 11:
-#line 73 "sintactico.y"
+#line 71 "sintactico.y"
     { addTablaSimbolos((yyvsp[(1) - (4)].nombreId), 4, 1, 1); }
     break;
 
   case 12:
-#line 74 "sintactico.y"
+#line 72 "sintactico.y"
     { yyerrok; }
     break;
 
   case 17:
-#line 82 "sintactico.y"
+#line 80 "sintactico.y"
     {
         for(int i=0; i<numVarsCola; i++) {
             addTablaSimbolos(colaVars[i], (yyvsp[(3) - (4)].tipo), 0, 0);
@@ -1615,52 +1613,52 @@ yyreduce:
     break;
 
   case 18:
-#line 88 "sintactico.y"
+#line 86 "sintactico.y"
     { yyerrok; }
     break;
 
   case 19:
-#line 92 "sintactico.y"
+#line 90 "sintactico.y"
     { strcpy(colaVars[numVarsCola], (yyvsp[(1) - (1)].nombreId)); numVarsCola++; }
     break;
 
   case 20:
-#line 93 "sintactico.y"
+#line 91 "sintactico.y"
     { strcpy(colaVars[numVarsCola], (yyvsp[(3) - (3)].nombreId)); numVarsCola++; }
     break;
 
   case 21:
-#line 97 "sintactico.y"
+#line 95 "sintactico.y"
     { (yyval.tipo) = 1; }
     break;
 
   case 22:
-#line 98 "sintactico.y"
+#line 96 "sintactico.y"
     { (yyval.tipo) = 2; }
     break;
 
   case 23:
-#line 99 "sintactico.y"
+#line 97 "sintactico.y"
     { (yyval.tipo) = 3; }
     break;
 
   case 24:
-#line 100 "sintactico.y"
+#line 98 "sintactico.y"
     { (yyval.tipo) = 4; }
     break;
 
   case 37:
-#line 114 "sintactico.y"
+#line 112 "sintactico.y"
     { yyerrok; }
     break;
 
   case 39:
-#line 122 "sintactico.y"
+#line 120 "sintactico.y"
     { (yyval.tipo) = 3; }
     break;
 
   case 40:
-#line 123 "sintactico.y"
+#line 121 "sintactico.y"
     {
         int idx = buscarSimbolo((yyvsp[(1) - (1)].nombreId));
         if(idx == -1) {
@@ -1678,7 +1676,7 @@ yyreduce:
     break;
 
   case 42:
-#line 142 "sintactico.y"
+#line 140 "sintactico.y"
     {
         int idx = buscarSimbolo((yyvsp[(1) - (3)].nombreId));
         if(idx == -1) {
@@ -1705,7 +1703,7 @@ yyreduce:
     break;
 
   case 43:
-#line 169 "sintactico.y"
+#line 167 "sintactico.y"
     {
          int idx = buscarSimbolo((yyvsp[(3) - (4)].nombreId));
          if(idx == -1) {
@@ -1721,68 +1719,68 @@ yyreduce:
     break;
 
   case 44:
-#line 183 "sintactico.y"
+#line 181 "sintactico.y"
     { (yyval.tipo) = (yyvsp[(1) - (1)].tipo); }
     break;
 
   case 45:
-#line 183 "sintactico.y"
+#line 181 "sintactico.y"
     { (yyval.tipo) = (yyvsp[(1) - (1)].tipo); }
     break;
 
   case 46:
-#line 186 "sintactico.y"
+#line 184 "sintactico.y"
     { (yyval.tipo) = (yyvsp[(1) - (1)].tipo); }
     break;
 
   case 47:
-#line 187 "sintactico.y"
+#line 185 "sintactico.y"
     {
         if ((yyvsp[(1) - (3)].tipo) == 2 || (yyvsp[(3) - (3)].tipo) == 2) (yyval.tipo) = 2; else (yyval.tipo) = 1;
     }
     break;
 
   case 48:
-#line 190 "sintactico.y"
+#line 188 "sintactico.y"
     {
         if ((yyvsp[(1) - (3)].tipo) == 2 || (yyvsp[(3) - (3)].tipo) == 2) (yyval.tipo) = 2; else (yyval.tipo) = 1;
     }
     break;
 
   case 49:
-#line 193 "sintactico.y"
+#line 191 "sintactico.y"
     { (yyval.tipo) = (yyvsp[(2) - (2)].tipo); }
     break;
 
   case 50:
-#line 197 "sintactico.y"
+#line 195 "sintactico.y"
     { (yyval.tipo) = (yyvsp[(1) - (1)].tipo); }
     break;
 
   case 51:
-#line 198 "sintactico.y"
+#line 196 "sintactico.y"
     {
         if ((yyvsp[(1) - (3)].tipo) == 2 || (yyvsp[(3) - (3)].tipo) == 2) (yyval.tipo) = 2; else (yyval.tipo) = 1;
     }
     break;
 
   case 52:
-#line 201 "sintactico.y"
+#line 199 "sintactico.y"
     { (yyval.tipo) = 1; }
     break;
 
   case 53:
-#line 202 "sintactico.y"
+#line 200 "sintactico.y"
     { (yyval.tipo) = 1; }
     break;
 
   case 54:
-#line 203 "sintactico.y"
+#line 201 "sintactico.y"
     { (yyval.tipo) = 1; }
     break;
 
   case 55:
-#line 207 "sintactico.y"
+#line 205 "sintactico.y"
     {
         int idx = buscarSimbolo((yyvsp[(1) - (1)].nombreId));
         if(idx == -1) {
@@ -1800,48 +1798,48 @@ yyreduce:
     break;
 
   case 56:
-#line 221 "sintactico.y"
+#line 219 "sintactico.y"
     { (yyval.tipo) = 1; }
     break;
 
   case 57:
-#line 222 "sintactico.y"
+#line 220 "sintactico.y"
     { (yyval.tipo) = 2; }
     break;
 
   case 58:
-#line 223 "sintactico.y"
+#line 221 "sintactico.y"
     { (yyval.tipo) = 3; }
     break;
 
   case 59:
-#line 225 "sintactico.y"
+#line 222 "sintactico.y"
     { (yyval.tipo) = (yyvsp[(2) - (3)].tipo); }
     break;
 
   case 63:
-#line 231 "sintactico.y"
+#line 228 "sintactico.y"
     { (yyval.tipo) = 4; }
     break;
 
   case 64:
-#line 232 "sintactico.y"
+#line 229 "sintactico.y"
     { (yyval.tipo) = 4; }
     break;
 
   case 65:
-#line 233 "sintactico.y"
+#line 230 "sintactico.y"
     { (yyval.tipo) = (yyvsp[(2) - (3)].tipo); }
     break;
 
   case 66:
-#line 234 "sintactico.y"
+#line 231 "sintactico.y"
     { (yyval.tipo) = 4; }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1845 "y.tab.c"
+#line 1843 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2055,7 +2053,7 @@ yyreturn:
 }
 
 
-#line 252 "sintactico.y"
+#line 249 "sintactico.y"
 
 
 void yyerror(const char* msg) {

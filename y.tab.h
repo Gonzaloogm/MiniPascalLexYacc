@@ -130,7 +130,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 33 "sintactico.y"
+#line 31 "sintactico.y"
 {
     char nombreId[100];
     int tipo;
