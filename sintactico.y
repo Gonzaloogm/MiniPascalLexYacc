@@ -3,63 +3,30 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/* --- CORRECCION LINKER: Definimos la variable aqui (sin extern) --- */
 int nLineas = 1;
 
+void yyerror(const char* msg);
 int yylex(void);
 FILE *yyin;
-int erroresSemanticos = 0;
-
-/* Definición de constantes para tipos */
-#define T_INTEGER 1
-#define T_REAL    2
-#define T_STRING  3
-#define T_BOOLEAN 4
 
 struct simbolo {
     char nombre[100];
     int tipo;
-    int esConstante;  /* 1 si es const, 0 si es var */
-    int inicializado; /* 1 si tiene valor, 0 si no */
+    int esConstante;
+    int inicializado;
 };
 
 struct simbolo tablaSimbolos[200];
-int numSimbolos = 0;
+int dim = 0;
+int nErrores = 0;
 
-/* Cola auxiliar para declaraciones múltiples (a,b:integer) */
 char colaVars[20][100];
 int numVarsCola = 0;
 
-void yyerror(const char* msg) {
-    /* No imprimimos errores sintácticos si queremos solo la salida semántica limpia,
-       pero para depurar es útil. El enunciado pide informar errores. */
-    /* fprintf(stderr, "LINEA %d. Error sintactico: %s\n", nLineas, msg); */
-}
-
-void errorSemantico(const char* msg) {
-    printf("LINEA %d. ERROR SEMÁNTICO: %s\n", nLineas, msg);
-    erroresSemanticos++;
-}
-
-int buscarSimbolo(char* nombre) {
-    for(int i = 0; i < numSimbolos; i++) {
-        if(strcmp(tablaSimbolos[i].nombre, nombre) == 0) return i;
-    }
-    return -1;
-}
-
-void insertarSimbolo(char* nombre, int tipo, int esConstante, int inicializado) {
-    if(buscarSimbolo(nombre) != -1) {
-        char buffer[200];
-        sprintf(buffer, "Identificador '%s' ya declarado", nombre);
-        errorSemantico(buffer);
-    } else {
-        strcpy(tablaSimbolos[numSimbolos].nombre, nombre);
-        tablaSimbolos[numSimbolos].tipo = tipo;
-        tablaSimbolos[numSimbolos].esConstante = esConstante;
-        tablaSimbolos[numSimbolos].inicializado = inicializado;
-        numSimbolos++;
-    }
-}
+/* Prototipos */
+int buscarSimbolo(char* nombre);
+void addTablaSimbolos(char* nombre, int tipo, int esConstante, int inicializado);
 
 %}
 
@@ -75,11 +42,10 @@ void insertarSimbolo(char* nombre, int tipo, int esConstante, int inicializado) 
 %type <tipo> tipo expresion expr_aritmetica termino factor expr_booleana expr_bool_simple parametro_write
 
 %token PROGRAM CONST VAR BEGGIN ENDD
-%token ASIGNACION WRITELN READLN IF ELSE FOR WHILE DO THEN TO DOWNTO
+%token ASIGNACION WRITELN READLN IF ELSE FOR WHILE DO TO DOWNTO
 %token MAS MENOS POR POTENCIA DIV MOD AND OR NOT
 %token MENOR MAYOR MENORIGUAL MAYORIGUAL IGUAL ENTRE AMPERSAND
 
-/* Precedencia para evitar conflictos if-else */
 %nonassoc THEN
 %nonassoc ELSE
 
@@ -87,10 +53,11 @@ void insertarSimbolo(char* nombre, int tipo, int esConstante, int inicializado) 
 
 programa: cabecera seccionDeclaracionCtes seccionDeclaracionVars cuerpo '.'
           {
-              if(erroresSemanticos == 0)
+              if(nErrores == 0) {
                   printf("\nSe detectaron 0 errores.\n");
-              else
-                  printf("\nSe detectaron %d errores.\n", erroresSemanticos);
+              } else {
+                  printf("\nSe detectaron %d errores.\n", nErrores);
+              }
           }
         ;
 
@@ -100,10 +67,10 @@ seccionDeclaracionCtes: /* vacio */ | CONST declaracionCtes ;
 declaracionCtes: declaracionCte | declaracionCte declaracionCtes ;
 
 declaracionCte:
-    ID IGUAL NUM ';'      { insertarSimbolo($1, T_INTEGER, 1, 1); }
-    | ID IGUAL REAL ';'   { insertarSimbolo($1, T_REAL, 1, 1); }
-    | ID IGUAL CADENA ';' { insertarSimbolo($1, T_STRING, 1, 1); }
-    | ID IGUAL BOOL ';'   { insertarSimbolo($1, T_BOOLEAN, 1, 1); }
+      ID IGUAL NUM ';'      { addTablaSimbolos($1, 1, 1, 1); }
+    | ID IGUAL REAL ';'     { addTablaSimbolos($1, 2, 1, 1); }
+    | ID IGUAL CADENA ';'   { addTablaSimbolos($1, 3, 1, 1); }
+    | ID IGUAL BOOL ';'     { addTablaSimbolos($1, 4, 1, 1); }
     | error ';' { yyerrok; }
     ;
 
@@ -113,9 +80,8 @@ declaracionVars: declaracionVar | declaracionVar declaracionVars ;
 declaracionVar:
     lista_ids ':' tipo ';'
     {
-        /* Procesamos la cola de variables pendientes */
         for(int i=0; i<numVarsCola; i++) {
-            insertarSimbolo(colaVars[i], $3, 0, 0);
+            addTablaSimbolos(colaVars[i], $3, 0, 0);
         }
         numVarsCola = 0;
     }
@@ -123,21 +89,15 @@ declaracionVar:
     ;
 
 lista_ids:
-    ID {
-        strcpy(colaVars[numVarsCola], $1);
-        numVarsCola++;
-    }
-    | lista_ids ',' ID {
-        strcpy(colaVars[numVarsCola], $3);
-        numVarsCola++;
-    }
+      ID { strcpy(colaVars[numVarsCola], $1); numVarsCola++; }
+    | lista_ids ',' ID { strcpy(colaVars[numVarsCola], $3); numVarsCola++; }
     ;
 
 tipo:
-    INTEGER   { $$ = T_INTEGER; }
-    | REAL_TIPO { $$ = T_REAL; }
-    | STRING    { $$ = T_STRING; }
-    | BOOLEAN   { $$ = T_BOOLEAN; }
+      INTEGER   { $$ = 1; }
+    | REAL_TIPO { $$ = 2; }
+    | STRING    { $$ = 3; }
+    | BOOLEAN   { $$ = 4; }
     ;
 
 cuerpo: BEGGIN instrucciones ENDD ;
@@ -146,8 +106,8 @@ instrucciones: /* vacio */ | lista_instrucciones ;
 lista_instrucciones: instruccion | lista_instrucciones instruccion ;
 
 instruccion:
-    asignacion ';'
-    | visualizacion
+      asignacion ';'
+    | visualizacion ';'
     | lectura ';'
     | if | while | for
     | ';'
@@ -155,21 +115,21 @@ instruccion:
     ;
 
 visualizacion:
-    WRITELN '(' parametro_write ')' ';'
+    WRITELN '(' parametro_write ')'
     ;
 
 parametro_write:
-    CADENA { $$ = T_STRING; }
+      CADENA { $$ = 3; }
     | ID {
         int idx = buscarSimbolo($1);
         if(idx == -1) {
-             char buf[100]; sprintf(buf, "Variable %s no declarada", $1);
-             errorSemantico(buf);
-             $$ = 0; // Tipo error
+             printf("LINEA %d. ERROR SEMÁNTICO: Variable %s no declarada\n", nLineas, $1);
+             nErrores++;
+             $$ = 0;
         } else {
              if(tablaSimbolos[idx].inicializado == 0) {
-                 char buf[100]; sprintf(buf, "Variable %s sin inicializar", $1);
-                 errorSemantico(buf);
+                 printf("LINEA %d. ERROR SEMÁNTICO: Variable %s sin inicializar\n", nLineas, $1);
+                 nErrores++;
              }
              $$ = tablaSimbolos[idx].tipo;
         }
@@ -182,25 +142,22 @@ asignacion:
     {
         int idx = buscarSimbolo($1);
         if(idx == -1) {
-            char buf[100]; sprintf(buf, "Variable %s no declarada", $1);
-            errorSemantico(buf);
+            printf("LINEA %d. ERROR SEMÁNTICO: Variable %s no declarada\n", nLineas, $1);
+            nErrores++;
         } else {
-            /* Chequeo: Modificar constante */
             if(tablaSimbolos[idx].esConstante) {
-                char buf[100]; sprintf(buf, "Intentando modificar la constante %s", $1);
-                errorSemantico(buf);
+                printf("LINEA %d. ERROR SEMÁNTICO: Intentando modificar la constante %s\n", nLineas, $1);
+                nErrores++;
             } else {
-                /* Chequeo: Tipos incompatibles (Regla estricta) */
-                /* Si asigno algo que NO es entero a un entero */
-                if (tablaSimbolos[idx].tipo == T_INTEGER && $3 != T_INTEGER) {
-                    errorSemantico("Tipos incompatibles");
+                if (tablaSimbolos[idx].tipo == 1 && $3 == 2) {
+                    printf("LINEA %d. ERROR SEMÁNTICO: Tipos incompatibles\n", nLineas);
+                    nErrores++;
                 }
-                /* Si asigno algo que NO es string a un string */
-                else if (tablaSimbolos[idx].tipo == T_STRING && $3 != T_STRING) {
-                    errorSemantico("Tipos incompatibles");
+                else if (tablaSimbolos[idx].tipo == 3 && $3 != 3) {
+                    printf("LINEA %d. ERROR SEMÁNTICO: Tipos incompatibles\n", nLineas);
+                    nErrores++;
                 }
                 
-                /* Si todo OK, se marca como inicializada */
                 tablaSimbolos[idx].inicializado = 1;
             }
         }
@@ -212,12 +169,12 @@ lectura:
     {
          int idx = buscarSimbolo($3);
          if(idx == -1) {
-             char buf[100]; sprintf(buf, "Variable %s no declarada", $3);
-             errorSemantico(buf);
+             printf("LINEA %d. ERROR SEMÁNTICO: Variable %s no declarada\n", nLineas, $3);
+             nErrores++;
          } else if(tablaSimbolos[idx].esConstante) {
-             errorSemantico("Intentando leer sobre una constante");
+             printf("LINEA %d. ERROR SEMÁNTICO: Intentando leer sobre una constante\n", nLineas);
+             nErrores++;
          } else {
-             /* Al leer, la variable toma valor -> inicializada */
              tablaSimbolos[idx].inicializado = 1;
          }
     }
@@ -226,60 +183,59 @@ lectura:
 expresion: expr_aritmetica { $$ = $1; } | expr_booleana { $$ = $1; } ;
 
 expr_aritmetica:
-    termino { $$ = $1; }
+      termino { $$ = $1; }
     | expr_aritmetica MAS termino {
-        /* Si alguno es real, resultado real. Si no, entero */
-        if ($1 == T_REAL || $3 == T_REAL) $$ = T_REAL; else $$ = T_INTEGER;
+        if ($1 == 2 || $3 == 2) $$ = 2; else $$ = 1;
     }
     | expr_aritmetica MENOS termino {
-        if ($1 == T_REAL || $3 == T_REAL) $$ = T_REAL; else $$ = T_INTEGER;
+        if ($1 == 2 || $3 == 2) $$ = 2; else $$ = 1;
     }
     | MENOS termino { $$ = $2; }
     ;
 
 termino:
-    factor { $$ = $1; }
+      factor { $$ = $1; }
     | termino POR factor {
-        if ($1 == T_REAL || $3 == T_REAL) $$ = T_REAL; else $$ = T_INTEGER;
+        if ($1 == 2 || $3 == 2) $$ = 2; else $$ = 1;
     }
-    | termino DIV factor { $$ = T_INTEGER; }
-    | termino MOD factor { $$ = T_INTEGER; }
-    | termino POTENCIA factor { $$ = T_INTEGER; }
+    | termino DIV factor { $$ = 1; }
+    | termino MOD factor { $$ = 1; }
+    | termino POTENCIA factor { $$ = 1; }
     ;
 
 factor:
-    ID {
+      ID {
         int idx = buscarSimbolo($1);
         if(idx == -1) {
-            char buf[100]; sprintf(buf, "Variable %s no declarada", $1);
-            errorSemantico(buf);
-            $$ = T_INTEGER; // Tipo dummy para continuar
+            printf("LINEA %d. ERROR SEMÁNTICO: Variable %s no declarada\n", nLineas, $1);
+            nErrores++;
+            $$ = 1;
         } else {
-            /* Chequeo: Variable sin inicializar usada en expresion */
             if(tablaSimbolos[idx].inicializado == 0) {
-                 char buf[100]; sprintf(buf, "Variable %s sin inicializar", $1);
-                 errorSemantico(buf);
+                 printf("LINEA %d. ERROR SEMÁNTICO: Variable %s sin inicializar\n", nLineas, $1);
+                 nErrores++;
             }
             $$ = tablaSimbolos[idx].tipo;
         }
     }
-    | NUM     { $$ = T_INTEGER; }
-    | REAL    { $$ = T_REAL; }
-    | CADENA  { $$ = T_STRING; }
+    | NUM     { $$ = 1; }
+    | REAL    { $$ = 2; }
+    | CADENA  { $$ = 3; }
+    /* CORRECCION CONFLICTOS: Quitamos BOOL de aqui */
     | '(' expr_aritmetica ')' { $$ = $2; }
     ;
 
 expr_booleana: expr_bool_simple | expr_booleana AND expr_bool_simple | expr_booleana OR expr_bool_simple ;
 
 expr_bool_simple:
-    expr_aritmetica comparador expr_aritmetica { $$ = T_BOOLEAN; }
-    | BOOL { $$ = T_BOOLEAN; }
+      expr_aritmetica comparador expr_aritmetica { $$ = 4; }
+    | BOOL { $$ = 4; }
     | '(' expr_booleana ')' { $$ = $2; }
-    | NOT expr_bool_simple { $$ = T_BOOLEAN; }
+    | NOT expr_bool_simple { $$ = 4; }
     ;
 
 if:
-    IF expr_booleana THEN instrucciones ';'
+      IF expr_booleana THEN instrucciones ';'
     | IF expr_booleana THEN BEGGIN instrucciones ENDD ';'
     | IF expr_booleana THEN BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD ';'
     ;
@@ -287,7 +243,7 @@ if:
 while: WHILE expr_booleana DO BEGGIN instrucciones ENDD ';' ;
 
 for:
-    FOR ID ASIGNACION expr_aritmetica TO expr_aritmetica DO BEGGIN instrucciones ENDD ';'
+      FOR ID ASIGNACION expr_aritmetica TO expr_aritmetica DO BEGGIN instrucciones ENDD ';'
     | FOR ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica DO BEGGIN instrucciones ENDD ';'
     ;
 
@@ -295,13 +251,33 @@ comparador: MENOR | MAYOR | MENORIGUAL | MAYORIGUAL | IGUAL | ENTRE ;
 
 %%
 
-int main()
-{
-    yyin = fopen("pascal2.pas","r");
-    if(!yyin){
-        printf("\nError abriendo ejemplo.pas\n");
-        return -1;
-    }
+void yyerror(const char* msg) {
+    /* fprintf(stderr, "LINEA %d. Error sintactico: %s\n", nLineas, msg); */
+}
+
+int main() {
+    yyin = fopen("pascalSem.pas","r");
+    if(!yyin){ printf("\nError abriendo pascalSem.pas\n"); return -1; }
     yyparse();
     return 0;
+}
+
+int buscarSimbolo(char* nombre) {
+    for(int i = 0; i < dim; i++) {
+        if(strcmp(tablaSimbolos[i].nombre, nombre) == 0) return i;
+    }
+    return -1;
+}
+
+void addTablaSimbolos(char* nombre, int tipo, int esConstante, int inicializado) {
+    if(buscarSimbolo(nombre) != -1) {
+        printf("LINEA %d. ERROR SEMÁNTICO: Identificador '%s' ya declarado\n", nLineas, nombre);
+        nErrores++;
+    } else {
+        strcpy(tablaSimbolos[dim].nombre, nombre);
+        tablaSimbolos[dim].tipo = tipo;
+        tablaSimbolos[dim].esConstante = esConstante;
+        tablaSimbolos[dim].inicializado = inicializado;
+        dim++;
+    }
 }

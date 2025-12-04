@@ -1,5 +1,8 @@
-LINEA 17. ERROR SEMÁNTICO: Variable a sin inicializar
-LINEA 27. ERROR SEMÁNTICO: Variable valor no declarada
-LINEA 37. ERROR SEMÁNTICO: Tipos incompatibles
-LINEA 40. ERROR SEMÁNTICO: Intentando modificar la constante PI
-LINEA 43. ERROR SEMÁNTICO: Variable c sin inicializar
+conflicts: 3 shift/reduce
+LINEA 9. ERROR SEMÁNTICO: Variable a sin inicializar
+LINEA 11. ERROR SEMÁNTICO: Variable valor no declarada
+LINEA 16. ERROR SEMÁNTICO: Tipos incompatibles
+LINEA 17. ERROR SEMÁNTICO: Intentando modificar la constante PI
+LINEA 18. ERROR SEMÁNTICO: Variable c sin inicializar
+
+Se detectaron 5 errores.

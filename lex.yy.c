@@ -1065,7 +1065,7 @@ case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
 #line 83 "lexico.l"
-; 
+;
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
