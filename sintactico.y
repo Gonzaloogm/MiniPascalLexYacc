@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/* --- CORRECCION LINKER: Definimos la variable aqui (sin extern) --- */
 int nLineas = 1;
 
 void yyerror(const char* msg);
@@ -24,7 +23,6 @@ int nErrores = 0;
 char colaVars[20][100];
 int numVarsCola = 0;
 
-/* Prototipos */
 int buscarSimbolo(char* nombre);
 void addTablaSimbolos(char* nombre, int tipo, int esConstante, int inicializado);
 
@@ -221,7 +219,6 @@ factor:
     | NUM     { $$ = 1; }
     | REAL    { $$ = 2; }
     | CADENA  { $$ = 3; }
-    /* CORRECCION CONFLICTOS: Quitamos BOOL de aqui */
     | '(' expr_aritmetica ')' { $$ = $2; }
     ;
 

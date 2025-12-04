@@ -21,5 +21,5 @@ begin
   writeln("Adios");
 
   writeln("Recuperado.");
-  writeln("Si ves esto, tu compilador ha superado los 3 errores.");
+  writeln("Si ves esto, tu compilador ha superado los 4 errores.");
 end.
