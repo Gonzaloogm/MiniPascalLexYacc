@@ -1,0 +1,1809 @@
+Terminals which are not used
+
+   DO
+   THEN
+
+
+Grammar
+
+    0 $accept: programa $end
+
+    1 programa: cabecera seccionDeclaracionCtes seccionDeclaracionVars cuerpo '.'
+
+    2 cabecera: PROGRAM ID ';'
+
+    3 seccionDeclaracionCtes: /* empty */
+    4                       | CONST declaracionCtes
+
+    5 declaracionCtes: declaracionCte
+    6                | declaracionCte declaracionCtes
+
+    7 declaracionCte: ID IGUAL NUM ';'
+    8               | ID IGUAL REAL ';'
+    9               | ID IGUAL CADENA ';'
+   10               | ID IGUAL BOOL ';'
+   11               | error ';'
+
+   12 seccionDeclaracionVars: /* empty */
+   13                       | VAR declaracionVars
+
+   14 declaracionVars: declaracionVar
+   15                | declaracionVar declaracionVars
+
+   16 declaracionVar: ID ':' tipo ';'
+   17               | error ';'
+
+   18 tipo: INTEGER
+   19     | REAL_TIPO
+   20     | STRING
+   21     | BOOLEAN
+
+   22 cuerpo: BEGGIN instrucciones ENDD
+
+   23 instrucciones: /* empty */
+   24              | lista_instrucciones
+
+   25 lista_instrucciones: instruccion
+   26                    | lista_instrucciones instruccion
+
+   27 instruccion: asignacion ';'
+   28            | visualizacion
+   29            | lectura ';'
+   30            | if
+   31            | while
+   32            | for
+   33            | ';'
+   34            | error ';'
+
+   35 visualizacion: WRITELN '(' parametro_write ')' ';'
+
+   36 parametro_write: CADENA
+   37                | ID
+
+   38 asignacion: ID ASIGNACION expresion
+
+   39 lectura: READLN '(' ID ')'
+   40        | READLN '(' AMPERSAND ID ')'
+
+   41 expresion: expr_aritmetica
+   42          | expr_booleana
+
+   43 expr_aritmetica: termino
+   44                | expr_aritmetica MAS termino
+   45                | expr_aritmetica MENOS termino
+   46                | MENOS termino
+
+   47 termino: factor
+   48        | termino POR factor
+   49        | termino DIV factor
+   50        | termino MOD factor
+   51        | termino POTENCIA factor
+
+   52 factor: ID
+   53       | NUM
+   54       | REAL
+   55       | CADENA
+   56       | '(' expr_aritmetica ')'
+
+   57 expr_booleana: expr_bool_simple
+   58              | expr_booleana AND expr_bool_simple
+   59              | expr_booleana OR expr_bool_simple
+
+   60 expr_bool_simple: expr_aritmetica comparador expr_aritmetica
+   61                 | BOOL
+   62                 | '(' expr_booleana ')'
+   63                 | NOT expr_bool_simple
+
+   64 if: IF '(' expr_booleana ')' BEGGIN instrucciones ENDD
+   65   | IF '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD
+
+   66 while: WHILE '(' expr_booleana ')' BEGGIN instrucciones ENDD
+
+   67 for: FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD
+   68    | FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD
+
+   69 comparador: MENOR
+   70           | MAYOR
+   71           | MENORIGUAL
+   72           | MAYORIGUAL
+   73           | IGUAL
+   74           | ENTRE
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 35 39 40 56 62 64 65 66 67 68
+')' (41) 35 39 40 56 62 64 65 66 67 68
+'.' (46) 1
+':' (58) 16
+';' (59) 2 7 8 9 10 11 16 17 27 29 33 34 35
+error (256) 11 17 34
+ID (258) 2 7 8 9 10 16 37 38 39 40 52 67 68
+NUM (259) 7 53
+REAL (260) 8 54
+CADENA (261) 9 36 55
+BOOL (262) 10 61
+INTEGER (263) 18
+REAL_TIPO (264) 19
+STRING (265) 20
+BOOLEAN (266) 21
+PROGRAM (267) 2
+CONST (268) 4
+VAR (269) 13
+BEGGIN (270) 22 64 65 66 67 68
+ENDD (271) 22 64 65 66 67 68
+ASIGNACION (272) 38 67 68
+WRITELN (273) 35
+READLN (274) 39 40
+IF (275) 64 65
+ELSE (276) 65
+FOR (277) 67 68
+WHILE (278) 66
+DO (279)
+THEN (280)
+TO (281) 67
+DOWNTO (282) 68
+MAS (283) 44
+MENOS (284) 45 46
+POR (285) 48
+POTENCIA (286) 51
+DIV (287) 49
+MOD (288) 50
+AND (289) 58
+OR (290) 59
+NOT (291) 63
+MENOR (292) 69
+MAYOR (293) 70
+MENORIGUAL (294) 71
+MAYORIGUAL (295) 72
+IGUAL (296) 7 8 9 10 73
+ENTRE (297) 74
+AMPERSAND (298) 40
+
+
+Nonterminals, with rules where they appear
+
+$accept (49)
+    on left: 0
+programa (50)
+    on left: 1, on right: 0
+cabecera (51)
+    on left: 2, on right: 1
+seccionDeclaracionCtes (52)
+    on left: 3 4, on right: 1
+declaracionCtes (53)
+    on left: 5 6, on right: 4 6
+declaracionCte (54)
+    on left: 7 8 9 10 11, on right: 5 6
+seccionDeclaracionVars (55)
+    on left: 12 13, on right: 1
+declaracionVars (56)
+    on left: 14 15, on right: 13 15
+declaracionVar (57)
+    on left: 16 17, on right: 14 15
+tipo (58)
+    on left: 18 19 20 21, on right: 16
+cuerpo (59)
+    on left: 22, on right: 1
+instrucciones (60)
+    on left: 23 24, on right: 22 64 65 66 67 68
+lista_instrucciones (61)
+    on left: 25 26, on right: 24 26
+instruccion (62)
+    on left: 27 28 29 30 31 32 33 34, on right: 25 26
+visualizacion (63)
+    on left: 35, on right: 28
+parametro_write (64)
+    on left: 36 37, on right: 35
+asignacion (65)
+    on left: 38, on right: 27
+lectura (66)
+    on left: 39 40, on right: 29
+expresion (67)
+    on left: 41 42, on right: 38
+expr_aritmetica (68)
+    on left: 43 44 45 46, on right: 41 44 45 56 60 67 68
+termino (69)
+    on left: 47 48 49 50 51, on right: 43 44 45 46 48 49 50 51
+factor (70)
+    on left: 52 53 54 55 56, on right: 47 48 49 50 51
+expr_booleana (71)
+    on left: 57 58 59, on right: 42 58 59 62 64 65 66
+expr_bool_simple (72)
+    on left: 60 61 62 63, on right: 57 58 59 63
+if (73)
+    on left: 64 65, on right: 30
+while (74)
+    on left: 66, on right: 31
+for (75)
+    on left: 67 68, on right: 32
+comparador (76)
+    on left: 69 70 71 72 73 74, on right: 60
+
+
+state 0
+
+    0 $accept: . programa $end
+
+    PROGRAM  shift, and go to state 1
+
+    programa  go to state 2
+    cabecera  go to state 3
+
+
+state 1
+
+    2 cabecera: PROGRAM . ID ';'
+
+    ID  shift, and go to state 4
+
+
+state 2
+
+    0 $accept: programa . $end
+
+    $end  shift, and go to state 5
+
+
+state 3
+
+    1 programa: cabecera . seccionDeclaracionCtes seccionDeclaracionVars cuerpo '.'
+
+    CONST  shift, and go to state 6
+
+    $default  reduce using rule 3 (seccionDeclaracionCtes)
+
+    seccionDeclaracionCtes  go to state 7
+
+
+state 4
+
+    2 cabecera: PROGRAM ID . ';'
+
+    ';'  shift, and go to state 8
+
+
+state 5
+
+    0 $accept: programa $end .
+
+    $default  accept
+
+
+state 6
+
+    4 seccionDeclaracionCtes: CONST . declaracionCtes
+
+    error  shift, and go to state 9
+    ID     shift, and go to state 10
+
+    declaracionCtes  go to state 11
+    declaracionCte   go to state 12
+
+
+state 7
+
+    1 programa: cabecera seccionDeclaracionCtes . seccionDeclaracionVars cuerpo '.'
+
+    VAR  shift, and go to state 13
+
+    $default  reduce using rule 12 (seccionDeclaracionVars)
+
+    seccionDeclaracionVars  go to state 14
+
+
+state 8
+
+    2 cabecera: PROGRAM ID ';' .
+
+    $default  reduce using rule 2 (cabecera)
+
+
+state 9
+
+   11 declaracionCte: error . ';'
+
+    ';'  shift, and go to state 15
+
+
+state 10
+
+    7 declaracionCte: ID . IGUAL NUM ';'
+    8               | ID . IGUAL REAL ';'
+    9               | ID . IGUAL CADENA ';'
+   10               | ID . IGUAL BOOL ';'
+
+    IGUAL  shift, and go to state 16
+
+
+state 11
+
+    4 seccionDeclaracionCtes: CONST declaracionCtes .
+
+    $default  reduce using rule 4 (seccionDeclaracionCtes)
+
+
+state 12
+
+    5 declaracionCtes: declaracionCte .
+    6                | declaracionCte . declaracionCtes
+
+    error  shift, and go to state 9
+    ID     shift, and go to state 10
+
+    VAR     reduce using rule 5 (declaracionCtes)
+    BEGGIN  reduce using rule 5 (declaracionCtes)
+
+    declaracionCtes  go to state 17
+    declaracionCte   go to state 12
+
+
+state 13
+
+   13 seccionDeclaracionVars: VAR . declaracionVars
+
+    error  shift, and go to state 18
+    ID     shift, and go to state 19
+
+    declaracionVars  go to state 20
+    declaracionVar   go to state 21
+
+
+state 14
+
+    1 programa: cabecera seccionDeclaracionCtes seccionDeclaracionVars . cuerpo '.'
+
+    BEGGIN  shift, and go to state 22
+
+    cuerpo  go to state 23
+
+
+state 15
+
+   11 declaracionCte: error ';' .
+
+    $default  reduce using rule 11 (declaracionCte)
+
+
+state 16
+
+    7 declaracionCte: ID IGUAL . NUM ';'
+    8               | ID IGUAL . REAL ';'
+    9               | ID IGUAL . CADENA ';'
+   10               | ID IGUAL . BOOL ';'
+
+    NUM     shift, and go to state 24
+    REAL    shift, and go to state 25
+    CADENA  shift, and go to state 26
+    BOOL    shift, and go to state 27
+
+
+state 17
+
+    6 declaracionCtes: declaracionCte declaracionCtes .
+
+    $default  reduce using rule 6 (declaracionCtes)
+
+
+state 18
+
+   17 declaracionVar: error . ';'
+
+    ';'  shift, and go to state 28
+
+
+state 19
+
+   16 declaracionVar: ID . ':' tipo ';'
+
+    ':'  shift, and go to state 29
+
+
+state 20
+
+   13 seccionDeclaracionVars: VAR declaracionVars .
+
+    $default  reduce using rule 13 (seccionDeclaracionVars)
+
+
+state 21
+
+   14 declaracionVars: declaracionVar .
+   15                | declaracionVar . declaracionVars
+
+    error  shift, and go to state 18
+    ID     shift, and go to state 19
+
+    BEGGIN  reduce using rule 14 (declaracionVars)
+
+    declaracionVars  go to state 30
+    declaracionVar   go to state 21
+
+
+state 22
+
+   22 cuerpo: BEGGIN . instrucciones ENDD
+
+    error    shift, and go to state 31
+    ID       shift, and go to state 32
+    WRITELN  shift, and go to state 33
+    READLN   shift, and go to state 34
+    IF       shift, and go to state 35
+    FOR      shift, and go to state 36
+    WHILE    shift, and go to state 37
+    ';'      shift, and go to state 38
+
+    ENDD  reduce using rule 23 (instrucciones)
+
+    instrucciones        go to state 39
+    lista_instrucciones  go to state 40
+    instruccion          go to state 41
+    visualizacion        go to state 42
+    asignacion           go to state 43
+    lectura              go to state 44
+    if                   go to state 45
+    while                go to state 46
+    for                  go to state 47
+
+
+state 23
+
+    1 programa: cabecera seccionDeclaracionCtes seccionDeclaracionVars cuerpo . '.'
+
+    '.'  shift, and go to state 48
+
+
+state 24
+
+    7 declaracionCte: ID IGUAL NUM . ';'
+
+    ';'  shift, and go to state 49
+
+
+state 25
+
+    8 declaracionCte: ID IGUAL REAL . ';'
+
+    ';'  shift, and go to state 50
+
+
+state 26
+
+    9 declaracionCte: ID IGUAL CADENA . ';'
+
+    ';'  shift, and go to state 51
+
+
+state 27
+
+   10 declaracionCte: ID IGUAL BOOL . ';'
+
+    ';'  shift, and go to state 52
+
+
+state 28
+
+   17 declaracionVar: error ';' .
+
+    $default  reduce using rule 17 (declaracionVar)
+
+
+state 29
+
+   16 declaracionVar: ID ':' . tipo ';'
+
+    INTEGER    shift, and go to state 53
+    REAL_TIPO  shift, and go to state 54
+    STRING     shift, and go to state 55
+    BOOLEAN    shift, and go to state 56
+
+    tipo  go to state 57
+
+
+state 30
+
+   15 declaracionVars: declaracionVar declaracionVars .
+
+    $default  reduce using rule 15 (declaracionVars)
+
+
+state 31
+
+   34 instruccion: error . ';'
+
+    ';'  shift, and go to state 58
+
+
+state 32
+
+   38 asignacion: ID . ASIGNACION expresion
+
+    ASIGNACION  shift, and go to state 59
+
+
+state 33
+
+   35 visualizacion: WRITELN . '(' parametro_write ')' ';'
+
+    '('  shift, and go to state 60
+
+
+state 34
+
+   39 lectura: READLN . '(' ID ')'
+   40        | READLN . '(' AMPERSAND ID ')'
+
+    '('  shift, and go to state 61
+
+
+state 35
+
+   64 if: IF . '(' expr_booleana ')' BEGGIN instrucciones ENDD
+   65   | IF . '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD
+
+    '('  shift, and go to state 62
+
+
+state 36
+
+   67 for: FOR . '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD
+   68    | FOR . '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD
+
+    '('  shift, and go to state 63
+
+
+state 37
+
+   66 while: WHILE . '(' expr_booleana ')' BEGGIN instrucciones ENDD
+
+    '('  shift, and go to state 64
+
+
+state 38
+
+   33 instruccion: ';' .
+
+    $default  reduce using rule 33 (instruccion)
+
+
+state 39
+
+   22 cuerpo: BEGGIN instrucciones . ENDD
+
+    ENDD  shift, and go to state 65
+
+
+state 40
+
+   24 instrucciones: lista_instrucciones .
+   26 lista_instrucciones: lista_instrucciones . instruccion
+
+    error    shift, and go to state 31
+    ID       shift, and go to state 32
+    WRITELN  shift, and go to state 33
+    READLN   shift, and go to state 34
+    IF       shift, and go to state 35
+    FOR      shift, and go to state 36
+    WHILE    shift, and go to state 37
+    ';'      shift, and go to state 38
+
+    ENDD  reduce using rule 24 (instrucciones)
+
+    instruccion    go to state 66
+    visualizacion  go to state 42
+    asignacion     go to state 43
+    lectura        go to state 44
+    if             go to state 45
+    while          go to state 46
+    for            go to state 47
+
+
+state 41
+
+   25 lista_instrucciones: instruccion .
+
+    $default  reduce using rule 25 (lista_instrucciones)
+
+
+state 42
+
+   28 instruccion: visualizacion .
+
+    $default  reduce using rule 28 (instruccion)
+
+
+state 43
+
+   27 instruccion: asignacion . ';'
+
+    ';'  shift, and go to state 67
+
+
+state 44
+
+   29 instruccion: lectura . ';'
+
+    ';'  shift, and go to state 68
+
+
+state 45
+
+   30 instruccion: if .
+
+    $default  reduce using rule 30 (instruccion)
+
+
+state 46
+
+   31 instruccion: while .
+
+    $default  reduce using rule 31 (instruccion)
+
+
+state 47
+
+   32 instruccion: for .
+
+    $default  reduce using rule 32 (instruccion)
+
+
+state 48
+
+    1 programa: cabecera seccionDeclaracionCtes seccionDeclaracionVars cuerpo '.' .
+
+    $default  reduce using rule 1 (programa)
+
+
+state 49
+
+    7 declaracionCte: ID IGUAL NUM ';' .
+
+    $default  reduce using rule 7 (declaracionCte)
+
+
+state 50
+
+    8 declaracionCte: ID IGUAL REAL ';' .
+
+    $default  reduce using rule 8 (declaracionCte)
+
+
+state 51
+
+    9 declaracionCte: ID IGUAL CADENA ';' .
+
+    $default  reduce using rule 9 (declaracionCte)
+
+
+state 52
+
+   10 declaracionCte: ID IGUAL BOOL ';' .
+
+    $default  reduce using rule 10 (declaracionCte)
+
+
+state 53
+
+   18 tipo: INTEGER .
+
+    $default  reduce using rule 18 (tipo)
+
+
+state 54
+
+   19 tipo: REAL_TIPO .
+
+    $default  reduce using rule 19 (tipo)
+
+
+state 55
+
+   20 tipo: STRING .
+
+    $default  reduce using rule 20 (tipo)
+
+
+state 56
+
+   21 tipo: BOOLEAN .
+
+    $default  reduce using rule 21 (tipo)
+
+
+state 57
+
+   16 declaracionVar: ID ':' tipo . ';'
+
+    ';'  shift, and go to state 69
+
+
+state 58
+
+   34 instruccion: error ';' .
+
+    $default  reduce using rule 34 (instruccion)
+
+
+state 59
+
+   38 asignacion: ID ASIGNACION . expresion
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    BOOL    shift, and go to state 74
+    MENOS   shift, and go to state 75
+    NOT     shift, and go to state 76
+    '('     shift, and go to state 77
+
+    expresion         go to state 78
+    expr_aritmetica   go to state 79
+    termino           go to state 80
+    factor            go to state 81
+    expr_booleana     go to state 82
+    expr_bool_simple  go to state 83
+
+
+state 60
+
+   35 visualizacion: WRITELN '(' . parametro_write ')' ';'
+
+    ID      shift, and go to state 84
+    CADENA  shift, and go to state 85
+
+    parametro_write  go to state 86
+
+
+state 61
+
+   39 lectura: READLN '(' . ID ')'
+   40        | READLN '(' . AMPERSAND ID ')'
+
+    ID         shift, and go to state 87
+    AMPERSAND  shift, and go to state 88
+
+
+state 62
+
+   64 if: IF '(' . expr_booleana ')' BEGGIN instrucciones ENDD
+   65   | IF '(' . expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    BOOL    shift, and go to state 74
+    MENOS   shift, and go to state 75
+    NOT     shift, and go to state 76
+    '('     shift, and go to state 77
+
+    expr_aritmetica   go to state 89
+    termino           go to state 80
+    factor            go to state 81
+    expr_booleana     go to state 90
+    expr_bool_simple  go to state 83
+
+
+state 63
+
+   67 for: FOR '(' . ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD
+   68    | FOR '(' . ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD
+
+    ID  shift, and go to state 91
+
+
+state 64
+
+   66 while: WHILE '(' . expr_booleana ')' BEGGIN instrucciones ENDD
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    BOOL    shift, and go to state 74
+    MENOS   shift, and go to state 75
+    NOT     shift, and go to state 76
+    '('     shift, and go to state 77
+
+    expr_aritmetica   go to state 89
+    termino           go to state 80
+    factor            go to state 81
+    expr_booleana     go to state 92
+    expr_bool_simple  go to state 83
+
+
+state 65
+
+   22 cuerpo: BEGGIN instrucciones ENDD .
+
+    $default  reduce using rule 22 (cuerpo)
+
+
+state 66
+
+   26 lista_instrucciones: lista_instrucciones instruccion .
+
+    $default  reduce using rule 26 (lista_instrucciones)
+
+
+state 67
+
+   27 instruccion: asignacion ';' .
+
+    $default  reduce using rule 27 (instruccion)
+
+
+state 68
+
+   29 instruccion: lectura ';' .
+
+    $default  reduce using rule 29 (instruccion)
+
+
+state 69
+
+   16 declaracionVar: ID ':' tipo ';' .
+
+    $default  reduce using rule 16 (declaracionVar)
+
+
+state 70
+
+   52 factor: ID .
+
+    $default  reduce using rule 52 (factor)
+
+
+state 71
+
+   53 factor: NUM .
+
+    $default  reduce using rule 53 (factor)
+
+
+state 72
+
+   54 factor: REAL .
+
+    $default  reduce using rule 54 (factor)
+
+
+state 73
+
+   55 factor: CADENA .
+
+    $default  reduce using rule 55 (factor)
+
+
+state 74
+
+   61 expr_bool_simple: BOOL .
+
+    $default  reduce using rule 61 (expr_bool_simple)
+
+
+state 75
+
+   46 expr_aritmetica: MENOS . termino
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    '('     shift, and go to state 93
+
+    termino  go to state 94
+    factor   go to state 81
+
+
+state 76
+
+   63 expr_bool_simple: NOT . expr_bool_simple
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    BOOL    shift, and go to state 74
+    MENOS   shift, and go to state 75
+    NOT     shift, and go to state 76
+    '('     shift, and go to state 77
+
+    expr_aritmetica   go to state 89
+    termino           go to state 80
+    factor            go to state 81
+    expr_bool_simple  go to state 95
+
+
+state 77
+
+   56 factor: '(' . expr_aritmetica ')'
+   62 expr_bool_simple: '(' . expr_booleana ')'
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    BOOL    shift, and go to state 74
+    MENOS   shift, and go to state 75
+    NOT     shift, and go to state 76
+    '('     shift, and go to state 77
+
+    expr_aritmetica   go to state 96
+    termino           go to state 80
+    factor            go to state 81
+    expr_booleana     go to state 97
+    expr_bool_simple  go to state 83
+
+
+state 78
+
+   38 asignacion: ID ASIGNACION expresion .
+
+    $default  reduce using rule 38 (asignacion)
+
+
+state 79
+
+   41 expresion: expr_aritmetica .
+   44 expr_aritmetica: expr_aritmetica . MAS termino
+   45                | expr_aritmetica . MENOS termino
+   60 expr_bool_simple: expr_aritmetica . comparador expr_aritmetica
+
+    MAS         shift, and go to state 98
+    MENOS       shift, and go to state 99
+    MENOR       shift, and go to state 100
+    MAYOR       shift, and go to state 101
+    MENORIGUAL  shift, and go to state 102
+    MAYORIGUAL  shift, and go to state 103
+    IGUAL       shift, and go to state 104
+    ENTRE       shift, and go to state 105
+
+    $default  reduce using rule 41 (expresion)
+
+    comparador  go to state 106
+
+
+state 80
+
+   43 expr_aritmetica: termino .
+   48 termino: termino . POR factor
+   49        | termino . DIV factor
+   50        | termino . MOD factor
+   51        | termino . POTENCIA factor
+
+    POR       shift, and go to state 107
+    POTENCIA  shift, and go to state 108
+    DIV       shift, and go to state 109
+    MOD       shift, and go to state 110
+
+    $default  reduce using rule 43 (expr_aritmetica)
+
+
+state 81
+
+   47 termino: factor .
+
+    $default  reduce using rule 47 (termino)
+
+
+state 82
+
+   42 expresion: expr_booleana .
+   58 expr_booleana: expr_booleana . AND expr_bool_simple
+   59              | expr_booleana . OR expr_bool_simple
+
+    AND  shift, and go to state 111
+    OR   shift, and go to state 112
+
+    $default  reduce using rule 42 (expresion)
+
+
+state 83
+
+   57 expr_booleana: expr_bool_simple .
+
+    $default  reduce using rule 57 (expr_booleana)
+
+
+state 84
+
+   37 parametro_write: ID .
+
+    $default  reduce using rule 37 (parametro_write)
+
+
+state 85
+
+   36 parametro_write: CADENA .
+
+    $default  reduce using rule 36 (parametro_write)
+
+
+state 86
+
+   35 visualizacion: WRITELN '(' parametro_write . ')' ';'
+
+    ')'  shift, and go to state 113
+
+
+state 87
+
+   39 lectura: READLN '(' ID . ')'
+
+    ')'  shift, and go to state 114
+
+
+state 88
+
+   40 lectura: READLN '(' AMPERSAND . ID ')'
+
+    ID  shift, and go to state 115
+
+
+state 89
+
+   44 expr_aritmetica: expr_aritmetica . MAS termino
+   45                | expr_aritmetica . MENOS termino
+   60 expr_bool_simple: expr_aritmetica . comparador expr_aritmetica
+
+    MAS         shift, and go to state 98
+    MENOS       shift, and go to state 99
+    MENOR       shift, and go to state 100
+    MAYOR       shift, and go to state 101
+    MENORIGUAL  shift, and go to state 102
+    MAYORIGUAL  shift, and go to state 103
+    IGUAL       shift, and go to state 104
+    ENTRE       shift, and go to state 105
+
+    comparador  go to state 106
+
+
+state 90
+
+   58 expr_booleana: expr_booleana . AND expr_bool_simple
+   59              | expr_booleana . OR expr_bool_simple
+   64 if: IF '(' expr_booleana . ')' BEGGIN instrucciones ENDD
+   65   | IF '(' expr_booleana . ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD
+
+    AND  shift, and go to state 111
+    OR   shift, and go to state 112
+    ')'  shift, and go to state 116
+
+
+state 91
+
+   67 for: FOR '(' ID . ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD
+   68    | FOR '(' ID . ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD
+
+    ASIGNACION  shift, and go to state 117
+
+
+state 92
+
+   58 expr_booleana: expr_booleana . AND expr_bool_simple
+   59              | expr_booleana . OR expr_bool_simple
+   66 while: WHILE '(' expr_booleana . ')' BEGGIN instrucciones ENDD
+
+    AND  shift, and go to state 111
+    OR   shift, and go to state 112
+    ')'  shift, and go to state 118
+
+
+state 93
+
+   56 factor: '(' . expr_aritmetica ')'
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    MENOS   shift, and go to state 75
+    '('     shift, and go to state 93
+
+    expr_aritmetica  go to state 119
+    termino          go to state 80
+    factor           go to state 81
+
+
+state 94
+
+   46 expr_aritmetica: MENOS termino .
+   48 termino: termino . POR factor
+   49        | termino . DIV factor
+   50        | termino . MOD factor
+   51        | termino . POTENCIA factor
+
+    POR       shift, and go to state 107
+    POTENCIA  shift, and go to state 108
+    DIV       shift, and go to state 109
+    MOD       shift, and go to state 110
+
+    $default  reduce using rule 46 (expr_aritmetica)
+
+
+state 95
+
+   63 expr_bool_simple: NOT expr_bool_simple .
+
+    $default  reduce using rule 63 (expr_bool_simple)
+
+
+state 96
+
+   44 expr_aritmetica: expr_aritmetica . MAS termino
+   45                | expr_aritmetica . MENOS termino
+   56 factor: '(' expr_aritmetica . ')'
+   60 expr_bool_simple: expr_aritmetica . comparador expr_aritmetica
+
+    MAS         shift, and go to state 98
+    MENOS       shift, and go to state 99
+    MENOR       shift, and go to state 100
+    MAYOR       shift, and go to state 101
+    MENORIGUAL  shift, and go to state 102
+    MAYORIGUAL  shift, and go to state 103
+    IGUAL       shift, and go to state 104
+    ENTRE       shift, and go to state 105
+    ')'         shift, and go to state 120
+
+    comparador  go to state 106
+
+
+state 97
+
+   58 expr_booleana: expr_booleana . AND expr_bool_simple
+   59              | expr_booleana . OR expr_bool_simple
+   62 expr_bool_simple: '(' expr_booleana . ')'
+
+    AND  shift, and go to state 111
+    OR   shift, and go to state 112
+    ')'  shift, and go to state 121
+
+
+state 98
+
+   44 expr_aritmetica: expr_aritmetica MAS . termino
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    '('     shift, and go to state 93
+
+    termino  go to state 122
+    factor   go to state 81
+
+
+state 99
+
+   45 expr_aritmetica: expr_aritmetica MENOS . termino
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    '('     shift, and go to state 93
+
+    termino  go to state 123
+    factor   go to state 81
+
+
+state 100
+
+   69 comparador: MENOR .
+
+    $default  reduce using rule 69 (comparador)
+
+
+state 101
+
+   70 comparador: MAYOR .
+
+    $default  reduce using rule 70 (comparador)
+
+
+state 102
+
+   71 comparador: MENORIGUAL .
+
+    $default  reduce using rule 71 (comparador)
+
+
+state 103
+
+   72 comparador: MAYORIGUAL .
+
+    $default  reduce using rule 72 (comparador)
+
+
+state 104
+
+   73 comparador: IGUAL .
+
+    $default  reduce using rule 73 (comparador)
+
+
+state 105
+
+   74 comparador: ENTRE .
+
+    $default  reduce using rule 74 (comparador)
+
+
+state 106
+
+   60 expr_bool_simple: expr_aritmetica comparador . expr_aritmetica
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    MENOS   shift, and go to state 75
+    '('     shift, and go to state 93
+
+    expr_aritmetica  go to state 124
+    termino          go to state 80
+    factor           go to state 81
+
+
+state 107
+
+   48 termino: termino POR . factor
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    '('     shift, and go to state 93
+
+    factor  go to state 125
+
+
+state 108
+
+   51 termino: termino POTENCIA . factor
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    '('     shift, and go to state 93
+
+    factor  go to state 126
+
+
+state 109
+
+   49 termino: termino DIV . factor
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    '('     shift, and go to state 93
+
+    factor  go to state 127
+
+
+state 110
+
+   50 termino: termino MOD . factor
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    '('     shift, and go to state 93
+
+    factor  go to state 128
+
+
+state 111
+
+   58 expr_booleana: expr_booleana AND . expr_bool_simple
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    BOOL    shift, and go to state 74
+    MENOS   shift, and go to state 75
+    NOT     shift, and go to state 76
+    '('     shift, and go to state 77
+
+    expr_aritmetica   go to state 89
+    termino           go to state 80
+    factor            go to state 81
+    expr_bool_simple  go to state 129
+
+
+state 112
+
+   59 expr_booleana: expr_booleana OR . expr_bool_simple
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    BOOL    shift, and go to state 74
+    MENOS   shift, and go to state 75
+    NOT     shift, and go to state 76
+    '('     shift, and go to state 77
+
+    expr_aritmetica   go to state 89
+    termino           go to state 80
+    factor            go to state 81
+    expr_bool_simple  go to state 130
+
+
+state 113
+
+   35 visualizacion: WRITELN '(' parametro_write ')' . ';'
+
+    ';'  shift, and go to state 131
+
+
+state 114
+
+   39 lectura: READLN '(' ID ')' .
+
+    $default  reduce using rule 39 (lectura)
+
+
+state 115
+
+   40 lectura: READLN '(' AMPERSAND ID . ')'
+
+    ')'  shift, and go to state 132
+
+
+state 116
+
+   64 if: IF '(' expr_booleana ')' . BEGGIN instrucciones ENDD
+   65   | IF '(' expr_booleana ')' . BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD
+
+    BEGGIN  shift, and go to state 133
+
+
+state 117
+
+   67 for: FOR '(' ID ASIGNACION . expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD
+   68    | FOR '(' ID ASIGNACION . expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    MENOS   shift, and go to state 75
+    '('     shift, and go to state 93
+
+    expr_aritmetica  go to state 134
+    termino          go to state 80
+    factor           go to state 81
+
+
+state 118
+
+   66 while: WHILE '(' expr_booleana ')' . BEGGIN instrucciones ENDD
+
+    BEGGIN  shift, and go to state 135
+
+
+state 119
+
+   44 expr_aritmetica: expr_aritmetica . MAS termino
+   45                | expr_aritmetica . MENOS termino
+   56 factor: '(' expr_aritmetica . ')'
+
+    MAS    shift, and go to state 98
+    MENOS  shift, and go to state 99
+    ')'    shift, and go to state 120
+
+
+state 120
+
+   56 factor: '(' expr_aritmetica ')' .
+
+    $default  reduce using rule 56 (factor)
+
+
+state 121
+
+   62 expr_bool_simple: '(' expr_booleana ')' .
+
+    $default  reduce using rule 62 (expr_bool_simple)
+
+
+state 122
+
+   44 expr_aritmetica: expr_aritmetica MAS termino .
+   48 termino: termino . POR factor
+   49        | termino . DIV factor
+   50        | termino . MOD factor
+   51        | termino . POTENCIA factor
+
+    POR       shift, and go to state 107
+    POTENCIA  shift, and go to state 108
+    DIV       shift, and go to state 109
+    MOD       shift, and go to state 110
+
+    $default  reduce using rule 44 (expr_aritmetica)
+
+
+state 123
+
+   45 expr_aritmetica: expr_aritmetica MENOS termino .
+   48 termino: termino . POR factor
+   49        | termino . DIV factor
+   50        | termino . MOD factor
+   51        | termino . POTENCIA factor
+
+    POR       shift, and go to state 107
+    POTENCIA  shift, and go to state 108
+    DIV       shift, and go to state 109
+    MOD       shift, and go to state 110
+
+    $default  reduce using rule 45 (expr_aritmetica)
+
+
+state 124
+
+   44 expr_aritmetica: expr_aritmetica . MAS termino
+   45                | expr_aritmetica . MENOS termino
+   60 expr_bool_simple: expr_aritmetica comparador expr_aritmetica .
+
+    MAS    shift, and go to state 98
+    MENOS  shift, and go to state 99
+
+    $default  reduce using rule 60 (expr_bool_simple)
+
+
+state 125
+
+   48 termino: termino POR factor .
+
+    $default  reduce using rule 48 (termino)
+
+
+state 126
+
+   51 termino: termino POTENCIA factor .
+
+    $default  reduce using rule 51 (termino)
+
+
+state 127
+
+   49 termino: termino DIV factor .
+
+    $default  reduce using rule 49 (termino)
+
+
+state 128
+
+   50 termino: termino MOD factor .
+
+    $default  reduce using rule 50 (termino)
+
+
+state 129
+
+   58 expr_booleana: expr_booleana AND expr_bool_simple .
+
+    $default  reduce using rule 58 (expr_booleana)
+
+
+state 130
+
+   59 expr_booleana: expr_booleana OR expr_bool_simple .
+
+    $default  reduce using rule 59 (expr_booleana)
+
+
+state 131
+
+   35 visualizacion: WRITELN '(' parametro_write ')' ';' .
+
+    $default  reduce using rule 35 (visualizacion)
+
+
+state 132
+
+   40 lectura: READLN '(' AMPERSAND ID ')' .
+
+    $default  reduce using rule 40 (lectura)
+
+
+state 133
+
+   64 if: IF '(' expr_booleana ')' BEGGIN . instrucciones ENDD
+   65   | IF '(' expr_booleana ')' BEGGIN . instrucciones ENDD ELSE BEGGIN instrucciones ENDD
+
+    error    shift, and go to state 31
+    ID       shift, and go to state 32
+    WRITELN  shift, and go to state 33
+    READLN   shift, and go to state 34
+    IF       shift, and go to state 35
+    FOR      shift, and go to state 36
+    WHILE    shift, and go to state 37
+    ';'      shift, and go to state 38
+
+    ENDD  reduce using rule 23 (instrucciones)
+
+    instrucciones        go to state 136
+    lista_instrucciones  go to state 40
+    instruccion          go to state 41
+    visualizacion        go to state 42
+    asignacion           go to state 43
+    lectura              go to state 44
+    if                   go to state 45
+    while                go to state 46
+    for                  go to state 47
+
+
+state 134
+
+   44 expr_aritmetica: expr_aritmetica . MAS termino
+   45                | expr_aritmetica . MENOS termino
+   67 for: FOR '(' ID ASIGNACION expr_aritmetica . TO expr_aritmetica ')' BEGGIN instrucciones ENDD
+   68    | FOR '(' ID ASIGNACION expr_aritmetica . DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD
+
+    TO      shift, and go to state 137
+    DOWNTO  shift, and go to state 138
+    MAS     shift, and go to state 98
+    MENOS   shift, and go to state 99
+
+
+state 135
+
+   66 while: WHILE '(' expr_booleana ')' BEGGIN . instrucciones ENDD
+
+    error    shift, and go to state 31
+    ID       shift, and go to state 32
+    WRITELN  shift, and go to state 33
+    READLN   shift, and go to state 34
+    IF       shift, and go to state 35
+    FOR      shift, and go to state 36
+    WHILE    shift, and go to state 37
+    ';'      shift, and go to state 38
+
+    ENDD  reduce using rule 23 (instrucciones)
+
+    instrucciones        go to state 139
+    lista_instrucciones  go to state 40
+    instruccion          go to state 41
+    visualizacion        go to state 42
+    asignacion           go to state 43
+    lectura              go to state 44
+    if                   go to state 45
+    while                go to state 46
+    for                  go to state 47
+
+
+state 136
+
+   64 if: IF '(' expr_booleana ')' BEGGIN instrucciones . ENDD
+   65   | IF '(' expr_booleana ')' BEGGIN instrucciones . ENDD ELSE BEGGIN instrucciones ENDD
+
+    ENDD  shift, and go to state 140
+
+
+state 137
+
+   67 for: FOR '(' ID ASIGNACION expr_aritmetica TO . expr_aritmetica ')' BEGGIN instrucciones ENDD
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    MENOS   shift, and go to state 75
+    '('     shift, and go to state 93
+
+    expr_aritmetica  go to state 141
+    termino          go to state 80
+    factor           go to state 81
+
+
+state 138
+
+   68 for: FOR '(' ID ASIGNACION expr_aritmetica DOWNTO . expr_aritmetica ')' BEGGIN instrucciones ENDD
+
+    ID      shift, and go to state 70
+    NUM     shift, and go to state 71
+    REAL    shift, and go to state 72
+    CADENA  shift, and go to state 73
+    MENOS   shift, and go to state 75
+    '('     shift, and go to state 93
+
+    expr_aritmetica  go to state 142
+    termino          go to state 80
+    factor           go to state 81
+
+
+state 139
+
+   66 while: WHILE '(' expr_booleana ')' BEGGIN instrucciones . ENDD
+
+    ENDD  shift, and go to state 143
+
+
+state 140
+
+   64 if: IF '(' expr_booleana ')' BEGGIN instrucciones ENDD .
+   65   | IF '(' expr_booleana ')' BEGGIN instrucciones ENDD . ELSE BEGGIN instrucciones ENDD
+
+    ELSE  shift, and go to state 144
+
+    $default  reduce using rule 64 (if)
+
+
+state 141
+
+   44 expr_aritmetica: expr_aritmetica . MAS termino
+   45                | expr_aritmetica . MENOS termino
+   67 for: FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica . ')' BEGGIN instrucciones ENDD
+
+    MAS    shift, and go to state 98
+    MENOS  shift, and go to state 99
+    ')'    shift, and go to state 145
+
+
+state 142
+
+   44 expr_aritmetica: expr_aritmetica . MAS termino
+   45                | expr_aritmetica . MENOS termino
+   68 for: FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica . ')' BEGGIN instrucciones ENDD
+
+    MAS    shift, and go to state 98
+    MENOS  shift, and go to state 99
+    ')'    shift, and go to state 146
+
+
+state 143
+
+   66 while: WHILE '(' expr_booleana ')' BEGGIN instrucciones ENDD .
+
+    $default  reduce using rule 66 (while)
+
+
+state 144
+
+   65 if: IF '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE . BEGGIN instrucciones ENDD
+
+    BEGGIN  shift, and go to state 147
+
+
+state 145
+
+   67 for: FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' . BEGGIN instrucciones ENDD
+
+    BEGGIN  shift, and go to state 148
+
+
+state 146
+
+   68 for: FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' . BEGGIN instrucciones ENDD
+
+    BEGGIN  shift, and go to state 149
+
+
+state 147
+
+   65 if: IF '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN . instrucciones ENDD
+
+    error    shift, and go to state 31
+    ID       shift, and go to state 32
+    WRITELN  shift, and go to state 33
+    READLN   shift, and go to state 34
+    IF       shift, and go to state 35
+    FOR      shift, and go to state 36
+    WHILE    shift, and go to state 37
+    ';'      shift, and go to state 38
+
+    ENDD  reduce using rule 23 (instrucciones)
+
+    instrucciones        go to state 150
+    lista_instrucciones  go to state 40
+    instruccion          go to state 41
+    visualizacion        go to state 42
+    asignacion           go to state 43
+    lectura              go to state 44
+    if                   go to state 45
+    while                go to state 46
+    for                  go to state 47
+
+
+state 148
+
+   67 for: FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN . instrucciones ENDD
+
+    error    shift, and go to state 31
+    ID       shift, and go to state 32
+    WRITELN  shift, and go to state 33
+    READLN   shift, and go to state 34
+    IF       shift, and go to state 35
+    FOR      shift, and go to state 36
+    WHILE    shift, and go to state 37
+    ';'      shift, and go to state 38
+
+    ENDD  reduce using rule 23 (instrucciones)
+
+    instrucciones        go to state 151
+    lista_instrucciones  go to state 40
+    instruccion          go to state 41
+    visualizacion        go to state 42
+    asignacion           go to state 43
+    lectura              go to state 44
+    if                   go to state 45
+    while                go to state 46
+    for                  go to state 47
+
+
+state 149
+
+   68 for: FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN . instrucciones ENDD
+
+    error    shift, and go to state 31
+    ID       shift, and go to state 32
+    WRITELN  shift, and go to state 33
+    READLN   shift, and go to state 34
+    IF       shift, and go to state 35
+    FOR      shift, and go to state 36
+    WHILE    shift, and go to state 37
+    ';'      shift, and go to state 38
+
+    ENDD  reduce using rule 23 (instrucciones)
+
+    instrucciones        go to state 152
+    lista_instrucciones  go to state 40
+    instruccion          go to state 41
+    visualizacion        go to state 42
+    asignacion           go to state 43
+    lectura              go to state 44
+    if                   go to state 45
+    while                go to state 46
+    for                  go to state 47
+
+
+state 150
+
+   65 if: IF '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones . ENDD
+
+    ENDD  shift, and go to state 153
+
+
+state 151
+
+   67 for: FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones . ENDD
+
+    ENDD  shift, and go to state 154
+
+
+state 152
+
+   68 for: FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones . ENDD
+
+    ENDD  shift, and go to state 155
+
+
+state 153
+
+   65 if: IF '(' expr_booleana ')' BEGGIN instrucciones ENDD ELSE BEGGIN instrucciones ENDD .
+
+    $default  reduce using rule 65 (if)
+
+
+state 154
+
+   67 for: FOR '(' ID ASIGNACION expr_aritmetica TO expr_aritmetica ')' BEGGIN instrucciones ENDD .
+
+    $default  reduce using rule 67 (for)
+
+
+state 155
+
+   68 for: FOR '(' ID ASIGNACION expr_aritmetica DOWNTO expr_aritmetica ')' BEGGIN instrucciones ENDD .
+
+    $default  reduce using rule 68 (for)

@@ -40,17 +40,17 @@
       know about them.  */
    enum yytokentype {
      ID = 258,
-     PROGRAM = 259,
-     CONST = 260,
-     VAR = 261,
-     NUM = 262,
-     REAL = 263,
-     CADENA = 264,
-     BOOL = 265,
-     INTEGER = 266,
-     REAL_TIPO = 267,
-     STRING = 268,
-     BOOLEAN = 269,
+     NUM = 259,
+     REAL = 260,
+     CADENA = 261,
+     BOOL = 262,
+     INTEGER = 263,
+     REAL_TIPO = 264,
+     STRING = 265,
+     BOOLEAN = 266,
+     PROGRAM = 267,
+     CONST = 268,
+     VAR = 269,
      BEGGIN = 270,
      ENDD = 271,
      ASIGNACION = 272,
@@ -84,17 +84,17 @@
 #endif
 /* Tokens.  */
 #define ID 258
-#define PROGRAM 259
-#define CONST 260
-#define VAR 261
-#define NUM 262
-#define REAL 263
-#define CADENA 264
-#define BOOL 265
-#define INTEGER 266
-#define REAL_TIPO 267
-#define STRING 268
-#define BOOLEAN 269
+#define NUM 259
+#define REAL 260
+#define CADENA 261
+#define BOOL 262
+#define INTEGER 263
+#define REAL_TIPO 264
+#define STRING 265
+#define BOOLEAN 266
+#define PROGRAM 267
+#define CONST 268
+#define VAR 269
 #define BEGGIN 270
 #define ENDD 271
 #define ASIGNACION 272
@@ -129,7 +129,15 @@
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+#line 67 "sintactico.y"
+{
+    char nombreId[100];
+    int tipo;
+}
+/* Line 1529 of yacc.c.  */
+#line 140 "y.tab.h"
+	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1

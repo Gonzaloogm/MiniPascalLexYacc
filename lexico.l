@@ -1,80 +1,91 @@
 %{
-  #include "y.tab.h"
-  int nLineas = 0;
+#include "y.tab.h"
+#include <string.h>
+
+extern int nLineas;
 %}
+
+/* Opciones para que no de error si no usamos input/yyunput */
+%option noinput nounput
 
 entero  [0-9]+
 real    {entero}"."{entero}
 iden    [a-zA-Z][a-zA-Z0-9]*
 cadena  (\"[^\"]*\"|\'[^\']*\')
-
 bool    (true|false)
 
 %%
 
-{real}      { printf("\n [LEX]REAL"); return REAL; }
-{entero}    { printf("\n [LEX]NUM"); return NUM; }
-{cadena}    { printf("\n [LEX]CADENA"); return CADENA; }
-{bool}      { printf("\n [LEX]BOOL"); return BOOL; }
+{real}      { yylval.tipo = 2; return REAL; } /* 2 = T_REAL */
+{entero}    { yylval.tipo = 1; return NUM; }  /* 1 = T_INTEGER */
+{cadena}    { yylval.tipo = 3; return CADENA; } /* 3 = T_STRING */
+{bool}      { yylval.tipo = 4; return BOOL; }   /* 4 = T_BOOLEAN */
 
-const       { printf("\n [LEX]CONST"); return CONST; }
-program     { printf("\n [LEX]PROGRAM"); return PROGRAM; }
-var         { printf("\n [LEX]VAR"); return VAR; }
+const       { return CONST; }
+program     { return PROGRAM; }
+var         { return VAR; }
 
-integer     { printf("\n [LEX]INTEGER"); return INTEGER; }
-real        { printf("\n [LEX]REAL_TIPO"); return REAL_TIPO; }
-string      { printf("\n [LEX]STRING"); return STRING; }
-boolean     { printf("\n [LEX]BOOLEAN"); return BOOLEAN; }
+integer     { yylval.tipo = 1; return INTEGER; }
+real        { yylval.tipo = 2; return REAL_TIPO; }
+string      { yylval.tipo = 3; return STRING; }
+boolean     { yylval.tipo = 4; return BOOLEAN; }
 
-begin       { printf("\n [LEX]BEGGIN"); return BEGGIN; }
-end         { printf("\n [LEX]ENDD"); return ENDD; }
+begin       { return BEGGIN; }
+end         { return ENDD; }
 
-":="        {printf("\n [LEX]ASIGNACION"); return ASIGNACION; }
+":="        { return ASIGNACION; }
 
-writeln     {printf("\n [LEX]WRITELN"); return WRITELN; }
-readln      {printf("\n [LEX]READLN"); return READLN; }
+writeln     { return WRITELN; }
+readln      { return READLN; }
 
-if          { printf("\n [LEX]IF"); return IF; }
-else        { printf("\n [LEX]ELSE"); return ELSE; }
-while       { printf("\n [LEX]WHILE"); return WHILE; }
-do          { printf("\n [LEX]DO"); return DO; }
-for         { printf("\n [LEX]FOR"); return FOR; }
+if          { return IF; }
+else        { return ELSE; }
+while       { return WHILE; }
+do          { return DO; }
+for         { return FOR; }
 
-then        { printf("\n [LEX]THEN"); return THEN; }
-to          { printf("\n [LEX]TO"); return TO; }
-downto      { printf("\n [LEX]DOWNTO"); return DOWNTO; }
+then        { return THEN; }
+to          { return TO; }
+downto      { return DOWNTO; }
 
-","         { printf("\n [LEX]COMA"); return ','; }
-";"         { printf("\n [LEX]PYC"); return ';'; }
+","         { return ','; }
+";"         { return ';'; }
+":"         { return ':'; }
+"("         { return '('; }
+")"         { return ')'; }
+"."         { return '.'; }
 
-div         { printf("\n [LEX]DIV"); return DIV; }
-mod         { printf("\n [LEX]MOD"); return MOD; }
-and         { printf("\n [LEX]AND"); return AND; }
-or          { printf("\n [LEX]OR"); return OR; }
-not         { printf("\n [LEX]NOT"); return NOT; }
+div         { return DIV; }
+mod         { return MOD; }
+and         { return AND; }
+or          { return OR; }
+not         { return NOT; }
 
-"+"         { printf("\n [LEX]MAS"); return MAS; }
-"-"         { printf("\n [LEX]MENOS"); return MENOS; }
-"*"         { printf("\n [LEX]POR"); return POR; }
-"**"        { printf("\n [LEX]POTENCIA"); return POTENCIA; }
+"+"         { return MAS; }
+"-"         { return MENOS; }
+"*"         { return POR; }
+"**"        { return POTENCIA; }
 
-"<"         { printf("\n [LEX]MENOR"); return MENOR; }
-">"         { printf("\n [LEX]MAYOR"); return MAYOR; }
-"<="        { printf("\n [LEX]MENORIGUAL"); return MENORIGUAL; }
-">="        { printf("\n [LEX]MAYORIGUAL"); return MAYORIGUAL; }
-"="         { printf("\n [LEX]IGUAL"); return IGUAL; }
-"<>"        { printf("\n [LEX]ENTRE"); return ENTRE; }
+"<"         { return MENOR; }
+">"         { return MAYOR; }
+"<="        { return MENORIGUAL; }
+">="        { return MAYORIGUAL; }
+"="         { return IGUAL; }
+"<>"        { return ENTRE; }
 
-"&"         { printf("\n [LEX]AMPERSAND"); return AMPERSAND; }
+"&"         { return AMPERSAND; }
 
-{iden}      { printf("\n [LEX]ID"); return ID; }
+{iden}      {
+              strcpy(yylval.nombreId, yytext);
+              return ID;
+            }
 
-"{"[^}]*"}" { printf("\n [LEX]COMENTARIO (Ignorado)"); }
+"{"[^}]*"}" {}
 
 [ \t]+      ;
 \n          { nLineas++; }
 
-.           { printf("\n [LEX][%c]", yytext[0]); return yytext[0]; }
+.           { printf("Error lexico: %s\n", yytext); }
 
 %%
 
